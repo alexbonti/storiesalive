@@ -1,0 +1,7 @@
+IL DIARIO DEL CARDINALE - come usarlo
+1. Pubblica la cartella su un hosting https (es. Netlify Drop): il GPS funziona solo in https.
+2. Prova: apri index.html?test  (mostra le note "da verificare"; tocca la mappa per leggere le coordinate).
+3. Mappa: usa le tessere OpenStreetMap (nessuna chiave). Per CARTO serve una chiave gratuita: vedi "mappa" in storia.json.
+3. Coordinate: sono stime. Al sopralluogo correggi lat/lng in storia.json (tappe e finale).
+4. Voci: esegui genera_voci.py con la tua chiave ElevenLabs. Senza mp3 usa la voce del telefono.
+5. Per ricominciare una partita: pulsante "Ricomincia" a fine gioco, oppure cancella i dati del sito.

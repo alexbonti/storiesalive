@@ -1,0 +1,186 @@
+{
+  "titolo": "Il Diario del Cardinale",
+  "centro": [
+    41.8066,
+    12.6811
+  ],
+  "intro": {
+    "id": "intro",
+    "personaggio": "cardinale",
+    "testo": "Frascati, 1603. Il cardinale Pietro Aldobrandini scende da solo in una galleria che non dovrebbe esistere. Risale dopo tre giorni, con i capelli bianchi e un quaderno pieno di simboli. Il quaderno è stato diviso in quattro frammenti e nascosto in città. Stanotte l'acqua delle fontane scorre al contrario. Trovate i frammenti. Dite la parola che chiude la Porta."
+  },
+  "squadre": [
+    {
+      "nome": "Nyarlathotep",
+      "ordine": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "nome": "Dagon",
+      "ordine": [
+        3,
+        1,
+        4,
+        2
+      ]
+    },
+    {
+      "nome": "Azathoth",
+      "ordine": [
+        4,
+        3,
+        2,
+        1
+      ]
+    }
+  ],
+  "penalita": {
+    "suggerimento": 120,
+    "errore": 60
+  },
+  "tappe": [
+    {
+      "n": 1,
+      "id": "t1",
+      "luogo": "Piazza Marconi, il belvedere sulla villa",
+      "lat": 41.8054,
+      "lng": 12.681,
+      "raggio": 70,
+      "personaggio": "cardinale",
+      "frammento": "Dalla piazza guardavo la mia villa e pensavo fosse mia. Ora so che è un sigillo. La facciata non guarda la città: guarda la valle, verso Roma, verso qualcosa che dorme sotto Roma.",
+      "enigma": "Il cardinale aveva inciso un sigillo sul muro, ma il tempo lo ha spezzato. Rimettete le tessere al loro posto: comparirà l'edificio che credeva di possedere. Quando l'immagine è intera, scrivete come si chiama.",
+      "risposte": [
+        "villa"
+      ],
+      "lettera": "V",
+      "verifica": "Coordinate di Piazza Marconi stimate: controllare sul posto.",
+      "gioco": "tessere",
+      "suggerimenti": [
+        "Toccate una tessera accanto al vuoto per farla scorrere.",
+        "Sembra una dimora signorile, con una scalinata e un frontone.",
+        "Una parola di cinque lettere: comincia per V."
+      ]
+    },
+    {
+      "n": 2,
+      "id": "t2",
+      "luogo": "Scuderie Aldobrandini",
+      "lat": 41.8056,
+      "lng": 12.6806,
+      "raggio": 70,
+      "personaggio": "cardinale",
+      "frammento": "I cavalli si rifiutano di entrare nelle scuderie dopo il tramonto. Lo stalliere dice che sentono qualcosa sotto il pavimento. Io gli ho detto che è l'acqua. Non era l'acqua.",
+      "enigma": "Sotto le assi delle scuderie il cardinale ha inciso una parola cifrata: R F F K L R. Ogni lettera è stata spostata sempre dello stesso numero di posti nell'alfabeto. Girate l'anello interno finché leggete una parola vera, poi scrivetela.",
+      "risposte": [
+        "occhio"
+      ],
+      "lettera": "O",
+      "verifica": "Orari delle Scuderie. Se sono chiuse, l'enigma si risolve all'esterno.",
+      "gioco": "ruota",
+      "suggerimenti": [
+        "È un cifrario di Cesare: lo spostamento è sempre lo stesso per tutte le lettere.",
+        "Lo spostamento è di tre posti.",
+        "Quello che gli stallieri dicevano di aver visto sotto le assi: sei lettere, comincia per O."
+      ],
+      "cifrato": "RFFKLR"
+    },
+    {
+      "n": 3,
+      "id": "t3",
+      "luogo": "Cattedrale di San Pietro",
+      "lat": 41.80758,
+      "lng": 12.68159,
+      "raggio": 60,
+      "personaggio": "cardinale",
+      "frammento": "Ho chiesto al vescovo di benedire la galleria. Ha rifiutato. Ha detto che esistono porte che una benedizione non chiude, ma annuncia.",
+      "enigma": "Sono un ricordo scolpito per un principe venuto da lontano, il giovane pretendente degli Stuart, figlio di un re senza regno. Cercate in cattedrale, a sinistra del portone centrale, il suo monumento con la lapide in latino. Trovate ciò che a quel re mancato spettava e che non ha mai cinto.",
+      "risposte": [
+        "corona"
+      ],
+      "lettera": "C",
+      "verifica": "Monumento a Carlo Edoardo Stuart, a sinistra del portone centrale: controllare posizione e testo della lapide, e gli orari.",
+      "gioco": "lucchetto",
+      "suggerimenti": [
+        "Ha a che fare con chi comanda.",
+        "Si mette in testa ai re.",
+        "Sei lettere: comincia per C."
+      ],
+      "codice": "8427",
+      "indizi": [
+        "Le quattro cifre sono tutte diverse.",
+        "La prima è il doppio della seconda.",
+        "La terza è la metà della seconda.",
+        "La somma delle quattro cifre è 21."
+      ],
+      "intro_gioco": "Il forziere sotto la lapide ha quattro ruote numerate. Deducete il codice."
+    },
+    {
+      "n": 4,
+      "id": "t4",
+      "luogo": "Chiesa del Gesù",
+      "lat": 41.80845,
+      "lng": 12.68083,
+      "raggio": 60,
+      "personaggio": "cardinale",
+      "frammento": "Nella chiesa dei gesuiti c'è una cupola che non esiste. È dipinta su una superficie piatta, ma guardata dal punto giusto si apre verso l'alto. Ho capito che anche la galleria funziona così: è dipinta sul mondo. Basta mettersi nel punto giusto per cadere dentro.",
+      "enigma": "Trovate il punto del pavimento da cui la cupola dipinta sembra vera. Nella galleria del cardinale, qualcosa rispondeva a ogni parola con la sua stessa voce. Come si chiama ciò che ripete le tue parole? Sussurrate la risposta: siete in chiesa.",
+      "risposte": [
+        "eco"
+      ],
+      "lettera": "E",
+      "verifica": "La finta cupola prospettica e il punto di osservazione sul pavimento.",
+      "gioco": "specchio",
+      "suggerimenti": [
+        "Pensate a una ninfa del mito.",
+        "Può solo ripetere le ultime parole che ascolta.",
+        "Tre lettere: comincia per E."
+      ],
+      "cifrato": "VXL",
+      "intro_gioco": "L'Eco risponde sempre al contrario. Lo specchio inverte l'alfabeto: A diventa Z, B diventa Y, e così via. Girate ogni ruota fino alla lettera che lo specchio restituisce."
+    }
+  ],
+  "finale": {
+    "id": "finale",
+    "luogo": "La cantina: la fraschetta del finale",
+    "lat": 41.8068,
+    "lng": 12.68,
+    "raggio": 60,
+    "personaggio": "ombra",
+    "frammento": "Siete arrivati. Sotto i vostri piedi qualcosa ascolta. Le quattro lettere sono vostre. Ora serve la parola.",
+    "enigma": "Il vino sigilla la Porta, ma solo nella misura giusta. Avete un barile da 3 litri e uno da 5: versate finché nel barile grande ci sono esattamente 4 litri. Poi mettete le lettere raccolte in ordine di tappa, dalla prima alla quarta: formano la parola che chiude la Porta. Scrivetela.",
+    "risposte": [
+      "voce"
+    ],
+    "verifica": "Scegliere la fraschetta, mettere le coordinate vere e avvisare il gestore complice con la busta sigillata.",
+    "gioco": "barili",
+    "suggerimenti": [
+      "Le tappe hanno un numero: mettete le lettere in quell'ordine.",
+      "Riempite il barile da 5, versatelo in quello da 3 e svuotate quello da 3.",
+      "È ciò che il cardinale non ebbe più dopo essere risalito."
+    ]
+  },
+  "chiusura": {
+    "id": "chiusura",
+    "personaggio": "cardinale",
+    "testo": "Se state leggendo, avete trovato la parola. Ditela tutti insieme, ad alta voce. Poi bevete. La Porta non sopporta il vino dei Castelli."
+  },
+  "mappa": {
+    "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribuzione": "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors",
+    "filtro": "invert(1) grayscale(1) brightness(.85) sepia(1) hue-rotate(68deg) saturate(2.2)",
+    "esempio_carto": {
+      "url": "https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png?key=LA_TUA_CHIAVE",
+      "filtro": "sepia(1) hue-rotate(68deg) saturate(1.9) brightness(.85)",
+      "nota": "Copia url e filtro in 'mappa' se ottieni una chiave gratuita CARTO."
+    }
+  },
+  "punti": {
+    "base": 100,
+    "suggerimento": 20,
+    "errore": 10
+  }
+}
