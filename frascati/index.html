@@ -147,6 +147,48 @@ form.answer button{flex:none}
 .final .lab{color:var(--mute);font-size:15px}
 body.glitch #game{animation:shake .45s var(--ease);filter:hue-rotate(110deg) contrast(1.2)}
 @keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+/* sanità */
+#san{font-size:15px;color:var(--mute);font-variant-numeric:tabular-nums}
+#san.basso{color:var(--blood)}
+body.turbato .dialog .txt,body.turbato .riddle{animation:trem 3.2s infinite}
+@keyframes trem{0%,90%,100%{transform:none;text-shadow:none}93%{transform:translateX(1px);text-shadow:-2px 0 var(--wine)}96%{transform:translateX(-1px);text-shadow:2px 0 var(--verd)}}
+body.folle::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1500;background:radial-gradient(ellipse at center,transparent 50%,rgba(138,47,61,.45) 100%);animation:pulsa 4s ease-in-out infinite}
+@keyframes pulsa{50%{opacity:.35}}
+.segue{font-family:var(--display);font-style:italic;color:var(--blood);margin:-8px 0 14px}
+
+/* reliquie */
+.inv{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.inv .lab{width:100%;color:var(--mute);font-size:15px}
+.inv button{min-height:40px;padding:0 12px;font-size:15px;border-color:var(--gold);color:var(--gold);background:transparent}
+.inv span.it{display:inline-flex;align-items:center;min-height:40px;padding:0 12px;border:1px solid var(--line);border-radius:12px;font-size:15px;color:var(--mute)}
+
+/* combattimento */
+#lotta{position:fixed;inset:0;z-index:3000;background:#000;display:none;touch-action:none;user-select:none;-webkit-user-select:none;overflow:hidden}
+#lotta.on{display:block}
+#lv,#lspr{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;background:#000}
+#lspr{display:none;object-fit:contain;padding:30% 20%}
+#lotta.nofilm #lspr{display:block}#lotta.nofilm #lv{visibility:hidden}
+#lotta.colpo{animation:shake .45s var(--ease)}
+#lotta::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--blood);opacity:0;transition:opacity .25s}
+#lotta.rosso::after{opacity:.45}
+.lhud{position:absolute;top:0;left:0;right:0;z-index:2;padding:calc(12px + env(safe-area-inset-top)) 16px 28px;display:flex;justify-content:space-between;align-items:baseline;background:linear-gradient(rgba(0,0,0,.8),transparent)}
+.lhud .n{font-family:var(--display);font-size:22px}
+.lhud .s{font-size:15px;color:var(--mute);font-variant-numeric:tabular-nums}
+#lcue{position:absolute;z-index:2;left:50%;top:46%;width:136px;height:136px;margin:-68px 0 0 -68px;border-radius:50%;display:none;align-items:center;justify-content:center;background:rgba(10,15,12,.55);border:3px solid var(--gold);color:var(--gold);animation:cue .45s infinite alternate}
+#lcue.on{display:flex}
+#lcue svg{width:76px;height:76px}
+@keyframes cue{to{transform:scale(1.08);box-shadow:0 0 34px var(--gold)}}
+#lsub{position:absolute;z-index:2;left:16px;right:16px;bottom:calc(46px + env(safe-area-inset-bottom));text-align:center;font-family:var(--display);font-style:italic;font-size:24px;text-shadow:0 2px 8px #000,0 0 2px #000;min-height:1.3em}
+#lbar{position:absolute;z-index:2;left:16px;right:16px;bottom:calc(26px + env(safe-area-inset-bottom));height:6px;border-radius:3px;background:rgba(255,255,255,.15);visibility:hidden}
+#lbar.on{visibility:visible}
+#lbar i{display:block;height:100%;width:100%;background:var(--gold);border-radius:3px}
+.lcard{position:absolute;z-index:3;left:0;right:0;bottom:0;padding:64px 20px calc(22px + env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(0,0,0,.92) 30%);display:none;gap:12px}
+.lcard.on{display:grid}
+.lcard h2{font-size:32px;line-height:1.05}
+.lcard p{margin:0;color:var(--mute)}
+.lcard .fr{font-family:var(--display);font-style:italic;color:var(--bone);font-size:19px}
+.lcard .mosse{display:flex;gap:14px;color:var(--gold);align-items:center;font-size:15px}
+.lcard .mosse svg{width:24px;height:24px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -169,7 +211,7 @@ body.glitch #game{animation:shake .45s var(--ease);filter:hue-rotate(110deg) con
 <div id="game" class="screen">
   <div id="bar">
     <div><div class="team-name" id="barTeam"></div><div class="step" id="barStep"></div></div>
-    <div class="right"><div id="timer">00:00</div><div id="pts">0 punti</div></div>
+    <div class="right"><div id="timer">00:00</div><div id="pts">0 punti</div><div id="san">Sanità 100</div></div>
   </div>
   <div id="map"></div>
   <div id="panel"></div>
@@ -180,11 +222,21 @@ body.glitch #game{animation:shake .45s var(--ease);filter:hue-rotate(110deg) con
   <div class="display" id="fineTeam" style="font-size:24px"></div>
   <div class="final">
     <div><div class="big" id="fineTime"></div><div class="lab">tempo con penalità</div></div>
-    <div><div class="big" id="finePts" style="color:var(--gold)"></div><div class="lab">punti</div></div>
+    <div><div class="big" id="finePts" style="color:var(--gold)"></div><div class="lab" id="fineLab">punti</div></div>
   </div>
   <div class="dialog"><canvas id="sprFine" width="16" height="16" aria-hidden="true"></canvas>
     <div><div class="who">Il Cardinale</div><div class="txt" id="fineTxt"></div></div></div>
   <div class="row"><button id="fineAudio" class="quiet"></button><button id="restart" class="quiet">Ricomincia</button></div>
+</div>
+
+<div id="lotta" aria-live="polite">
+  <video id="lv" playsinline webkit-playsinline preload="auto"></video>
+  <canvas id="lspr" width="16" height="16" aria-hidden="true"></canvas>
+  <div class="lhud"><span class="n" id="lnome"></span><span class="s" id="lsan"></span></div>
+  <div id="lcue" role="img"></div>
+  <div id="lsub"></div>
+  <div id="lbar"><i></i></div>
+  <div class="lcard" id="lcard"></div>
 </div>
 
 <script src="vendor/leaflet.js"></script>
@@ -196,16 +248,22 @@ const IC={
  right:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
  coin:s=>`<svg class="coin${s?' spent':''}" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11"/><path d="M13 6l5 7-5 7-5-7z"/></svg>`,
  sigil:'<svg class="sigil" viewBox="0 0 44 44" width="44" height="44"><circle cx="22" cy="22" r="18" fill="#0a0f0c" stroke="#c8a557" stroke-width="2"/><path d="M22 9l12 21H10z" fill="none" stroke="#c8a557" stroke-width="2" stroke-linejoin="round"/><circle cx="22" cy="23.5" r="3.2" fill="#c8a557"/></svg>',
+ dir:m=>{const r={sinistra:180,destra:0,su:270,giu:90}[m];
+   if(m==='tocco')return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M6 9h12"/></svg>';
+   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform:rotate(${r}deg)"><path d="M4 12h15M13 6l6 6-6 6"/></svg>`;},
  seal:l=>`<svg viewBox="0 0 84 84" aria-hidden="true"><path d="M42 4l9 5 10-1 5 9 9 5-1 10 5 9-5 9 1 10-9 5-5 9-10-1-9 5-9-5-10 1-5-9-9-5 1-10-5-9 5-9-1-10 9-5 5-9 10 1z" fill="#8a2f3d"/><circle cx="42" cy="42" r="26" fill="none" stroke="#d9a39a" stroke-width="1.5"/><text x="42" y="54" text-anchor="middle" font-family="IM Fell English,Georgia,serif" font-size="34" fill="#f3e3df">${l}</text></svg>`
 };
 
 /* ---------- Sprite pixel art ---------- */
 const PAL={'.':null,r:'#9c2b2b',R:'#6b1a1a',s:'#e8c9a0',w:'#eeeeee',k:'#111111',g:'#c9a24b',
-  h:'#2f3d35',H:'#1b241f',e:'#8fbf6a',l:'#c9a24b',y:'#ffdf8a',p:'#4a3a5e',P:'#241a30'};
+  h:'#2f3d35',H:'#1b241f',e:'#8fbf6a',l:'#c9a24b',y:'#ffdf8a',p:'#4a3a5e',P:'#241a30',
+  f:'#2e6b5e',F:'#173a33',o:'#7fb59a',b:'#5b6f86',B:'#2a3646'};
 const SPR={
 cardinale:["................",".....rrrrrr.....","....rrrrrrrr....","....rrrrrrrr....","...RRRRRRRRRR...","....wssssssw....","....skssssks....","....ssssssss....",".....wwssww.....","...rrrrrrrrrr...","..rrrrrgrrrrrr..","..rrrrgggrrrrr..","..rrrrrgrrrrrr..","..rrrrrgrrrrrr..","..RRRRRRRRRRRR..","................"],
 custode:["................",".....hhhhhh.....","....hhhhhhhh....","...hhHHHHHHhh...","...hhHeHHeHhh...","...hhHHHHHHhh...","...hhhHHHHhhh...","....hhhhhhhh....","...hhhhhhhhhhyl.","...hhhhhhhhhhll.","...hhhhhhhhhhyy.","...hhhhhhhhhh.l.","..hhhhhhhhhhhh..","..hhhhhhhhhhhh..","..HHHHHHHHHHHH..","................"],
-ombra:["................","................","....pppppppp....","...pppppppppp...","..pppppppppppp..","..ppeeppeepppp..","..ppeeppeepppp..","..pppppppppppp..","..ppPPPPPPPPpp..","..pppppppppppp..","..pp.pp..pp.pp..","..p..pp..pp..p..",".p...p....p...p.","................","................","................"]
+ombra:["................","................","....pppppppp....","...pppppppppp...","..pppppppppppp..","..ppeeppeepppp..","..ppeeppeepppp..","..pppppppppppp..","..ppPPPPPPPPpp..","..pppppppppppp..","..pp.pp..pp.pp..","..p..pp..pp..p..",".p...p....p...p.","................","................","................"],
+profondo:["................",".....FFFFFF.....","....FffffffF....","...FffffffffF...","...FfyyffyyfF...","...FfykffkyfF...","...FffffffffF...","..FFfkkkkkkfFF..","..F.FffffffF.F..",".FF.FfoooofF.FF.","FF..FfoooofF..FF","F...FfoooofF...F","....FffffffF....","....Ff.FF.fF....","...FF..FF..FF...","................"],
+tindalos:["................",".B............B.",".BB..........BB.",".BbB........BbB.","..BbBBBBBBBBbB..","..BbbbbbbbbbbB..","..BbyybbbbyybB..","..BbbbbbbbbbbB..","...BbbkkkkbbB...","...BbkwkwkkbB...","....BbkkkkbB....","....BBbbbbBB....","...B.BbBBbB.B...","..B..B.BB.B..B..",".B...B....B...B.","................"]
 };
 const NOMI={cardinale:'Il Cardinale',custode:'Il Custode',ombra:"Qualcosa nell'ombra"};
 function draw(canvas,who){const c=canvas.getContext('2d');c.clearRect(0,0,16,16);
@@ -254,15 +312,18 @@ function init(data){
   const prev=localStorage.getItem(KEY);if(prev){S=JSON.parse(prev);entraGioco();}
 }
 function iniziaSquadra(i){stopAudio();
-  S={team:i,idx:0,phase:'viaggio',start:Date.now(),pen:0,pts:0,hn:0,er:0,mg:{},lettere:{},done:false};save();entraGioco();}
+  S={team:i,idx:0,phase:'viaggio',start:Date.now(),pen:0,pts:0,hn:0,hl:0,er:0,mg:{},lettere:{},done:false,
+    san:D.sanita.iniziale,inv:{},lotte:{},d0:{}};save();entraGioco();}
+/* partite salvate prima dei mostri */
+function completaStato(){S.san??=D.sanita.iniziale;S.inv??={};S.lotte??={};S.d0??={};S.hl??=0;}
 const stops=()=>[...D.squadre[S.team].ordine.map(n=>D.tappe.find(x=>x.n===n)),D.finale];
 const cur=()=>stops()[S.idx];
 
 function entraGioco(){
-  if(S.done)return mostraFine();
+  completaStato();if(S.done)return mostraFine();
   $('#start').classList.remove('on');$('#fine').classList.remove('on');$('#game').classList.add('on');
   $('#barTeam').textContent=D.squadre[S.team].nome;
-  if(!timerOn){timerOn=true;setInterval(()=>{if(!S||S.done)return;$('#timer').textContent=fmt(elapsed());$('#pts').textContent=S.pts+' punti';},500);}
+  if(!timerOn){timerOn=true;setInterval(()=>{if(!S||S.done)return;$('#timer').textContent=fmt(elapsed());$('#pts').textContent=S.pts+' punti';aggiornaSanita();},500);}
   if(!map)creaMappa();
   render();
 }
@@ -292,6 +353,11 @@ function aggiornaDistanza(){
   const d=dist(lastPos[0],lastPos[1],t.lat,t.lng);
   el.textContent=d>=1000?(d/1000).toFixed(1).replace('.',',')+' km da qui':Math.round(d)+' m da qui';
   btn.disabled=!(d<=t.raggio);btn.textContent=d<=t.raggio?'Siete arrivati: aprite il frammento':'Raggiungete il sigillo sulla mappa';
+  /* il mostro della tratta compare a metà strada circa */
+  const m=mostroTratta();if(!m||lottaAperta)return;
+  if(S.d0[S.idx]===undefined){S.d0[S.idx]=d;save();}
+  const d0=S.d0[S.idx];
+  if(d0>t.raggio*1.5&&d<=d0*0.55&&d>t.raggio)apriLotta(m,()=>render());
 }
 
 /* ---------- Pannello ---------- */
@@ -304,10 +370,14 @@ function render(){
   const ver=TEST&&t.verifica?`<p class="msg" style="color:var(--gold);font-size:15px">Da verificare: ${t.verifica}</p>`:'';
   if(S.phase==='viaggio'){
     p.innerHTML=`<h2 class="where">${t.luogo}</h2><p class="dist" id="dist">In attesa del GPS…</p>
+      ${mostroTratta()?'<p class="segue">Qualcosa vi segue lungo la strada.</p>':''}
       <div class="stack"><button class="primary" id="arrivo" disabled>Raggiungete il sigillo sulla mappa</button>
       <button class="quiet" id="manuale">Il GPS non va: confermo io</button>
-      ${TEST?'<button class="quiet" id="sim">Test: simula di essere qui</button><button class="quiet" id="reset">Test: azzera partita</button>':''}</div>
-      <p class="msg" id="gpsmsg" style="color:var(--mute);font-size:15px"></p>${ver}`;
+      ${TEST?'<button class="quiet" id="sim">Test: simula di essere qui</button><button class="quiet" id="reset">Test: azzera partita</button>':''}
+      ${TEST&&mostroTratta()?'<button class="quiet" id="tmostro">Test: fai apparire il mostro</button>':''}</div>
+      <p class="msg" id="gpsmsg" style="color:var(--mute);font-size:15px"></p><div id="inv"></div>${ver}`;
+    inventario();
+    if(TEST&&mostroTratta())$('#tmostro').onclick=()=>apriLotta(mostroTratta(),()=>render());
     $('#arrivo').onclick=vaiScena;$('#manuale').onclick=vaiScena;
     if(TEST){fake=false;$('#sim').onclick=()=>{fake=true;lastPos=[t.lat,t.lng];posaMe();map.setView(lastPos,18);aggiornaDistanza();};
       $('#reset').onclick=()=>{localStorage.removeItem(KEY);location.reload();};}
@@ -329,7 +399,9 @@ function render(){
     $('#next').onclick=avanza;
   }
 }
-function vaiScena(){S.phase='scena';save();render();}
+function vaiScena(){const m=mostroTratta();
+  if(m)return apriLotta(m,()=>{S.phase='scena';save();render();},true);
+  S.phase='scena';save();render();}
 
 function renderEnigma(p,t,ver){
   const gated=['tessere','barili','lucchetto','specchio'].includes(t.gioco)&&!(S.mg[t.id]&&S.mg[t.id].solved);
@@ -341,7 +413,8 @@ function renderEnigma(p,t,ver){
       <button class="primary" id="check" ${gated?'disabled':''}>Controlla</button></form>
     <div class="msg" id="msg" role="status"></div>
     <div class="coins"><div class="left" id="coins"></div><button id="hint"></button></div>
-    <div class="hintlist" id="hintbox"></div>${ver}`;
+    <div class="hintlist" id="hintbox"></div><div id="inv"></div>${ver}`;
+  inventario();
   $('#f').onsubmit=e=>{e.preventDefault();controlla();};
   $('#hint').onclick=usaMoneta;
   aggiornaMonete();
@@ -356,7 +429,9 @@ function aggiornaMonete(){const t=cur(),tot=t.suggerimenti.length;
   $('#coins').innerHTML=Array.from({length:tot},(_,i)=>IC.coin(i<S.hn)).join('')+`<span>${tot-S.hn} su ${tot}</span>`;
   const b=$('#hint');b.textContent=S.hn>=tot?'Monete finite':'Usa una moneta';b.disabled=S.hn>=tot;}
 function usaMoneta(){const t=cur();if(S.hn>=t.suggerimenti.length)return;
-  S.pen+=D.penalita.suggerimento;S.hn++;save();mostraHint(S.hn-1,true);aggiornaMonete();}
+  S.pen+=D.penalita.suggerimento;S.hn++;save();mostraHint(S.hn-1,true);aggiornaMonete();inventario();}
+function usaLanterna(){const t=cur();if(!(S.inv.lanterna>0)||S.hn>=t.suggerimenti.length)return;
+  S.inv.lanterna--;S.hn++;S.hl++;save();mostraHint(S.hn-1,true);aggiornaMonete();inventario();}
 function mostraHint(i,parla){const t=cur();
   const el=document.createElement('div');el.className='dialog plain';
   el.innerHTML=`<canvas width="16" height="16" aria-hidden="true"></canvas><div><div class="who">Il Custode</div><div class="txt"></div></div>`;
@@ -367,23 +442,137 @@ function mostraHint(i,parla){const t=cur();
 function controlla(){
   const t=cur(),v=norm($('#ans').value);if(!v)return;
   const ok=t.risposte.map(norm).some(r=>v===r||v.split(' ').includes(r));
-  if(ok){const g=Math.max(0,D.punti.base-D.punti.suggerimento*S.hn-D.punti.errore*S.er);
+  if(ok){const g=Math.max(0,D.punti.base-D.punti.suggerimento*(S.hn-S.hl)-D.punti.errore*S.er);
     S.pts+=g;S.ultimi=g;S.phase='risolta';if(t.lettera)S.lettere[t.n]=t.lettera;save();render();}
-  else{S.pen+=D.penalita.errore;S.er++;save();glitch();
-    const m=$('#msg');m.className='msg ko';m.textContent=`No. Penalità di ${D.penalita.errore/60} minuto.`;$('#ans').select();}
+  else{S.pen+=D.penalita.errore;S.er++;perdiSanita(D.sanita.errore);save();glitch();
+    const m=$('#msg');m.className='msg ko';m.textContent=`No. Penalità di ${D.penalita.errore/60} minuto, Sanità -${D.sanita.errore}.`;$('#ans').select();}
 }
 function avanza(){
   if(S.idx===D.tappe.length){S.done=true;S.final=elapsed();save();return mostraFine();}
-  S.idx++;S.phase='viaggio';S.hn=0;S.er=0;save();render();
+  S.idx++;S.phase='viaggio';S.hn=0;S.hl=0;S.er=0;save();render();
 }
 function mostraFine(){
   $('#game').classList.remove('on');$('#start').classList.remove('on');$('#fine').classList.add('on');
   $('#fineTeam').textContent='Squadra '+D.squadre[S.team].nome;
-  $('#fineTime').textContent=fmt(S.final||elapsed());$('#finePts').textContent=S.pts;
+  $('#fineTime').textContent=fmt(S.final||elapsed());$('#finePts').textContent=S.pts+S.san;
+  $('#fineLab').textContent=`punti (${S.pts} + ${S.san} di sanità)`;
   $('#fineTxt').textContent=D.chiusura.testo;
   listenBtn($('#fineAudio'),()=>speak(D.chiusura.id,D.chiusura.testo,'cardinale'));
   speak(D.chiusura.id,D.chiusura.testo,'cardinale');
 }
+
+/* ================= Sanità e reliquie ================= */
+function aggiornaSanita(){if(!S)return;const el=$('#san');if(el){el.textContent='Sanità '+S.san;el.classList.toggle('basso',S.san<30);}
+  document.body.classList.toggle('turbato',S.san<60);document.body.classList.toggle('folle',S.san<30);}
+function perdiSanita(n){S.san=Math.max(0,S.san-n);aggiornaSanita();}
+setInterval(()=>{if(S&&!S.done&&S.san<30&&!lottaAperta&&Math.random()<.5)glitch();},40000);
+function inventario(){const el=$('#inv');if(!el)return;const R=D.reliquie,inv=S.inv||{};
+  const ks=Object.keys(R).filter(k=>inv[k]>0);if(!ks.length){el.innerHTML='';return;}
+  el.className='inv';
+  el.innerHTML='<div class="lab">Reliquie</div>'+ks.map(k=>{const n=inv[k]>1?' ×'+inv[k]:'';
+    if(k==='rosario'&&S.san<D.sanita.iniziale)return `<button data-r="rosario" title="${R[k].desc}">${R[k].nome}${n}: usa</button>`;
+    if(k==='lanterna'&&S.phase==='enigma'&&S.hn<cur().suggerimenti.length)return `<button data-r="lanterna" title="${R[k].desc}">${R[k].nome}${n}: suggerimento gratis</button>`;
+    return `<span class="it" title="${R[k].desc}">${R[k].nome}${n}</span>`;}).join('');
+  el.onclick=e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.r==='rosario'){S.inv.rosario--;S.san=Math.min(D.sanita.iniziale,S.san+R.rosario.valore);save();aggiornaSanita();inventario();}
+    else if(b.dataset.r==='lanterna')usaLanterna();};
+}
+
+/* ================= Combattimenti a film interattivo ================= */
+/* Ogni mostro: intro → [momento decisivo → ok_N] … → vittoria. Errore o tempo scaduto → ko, Sanità persa, si riprova.
+   Dopo sconfitte_max sconfitte la squadra fugge. Il gioco non si blocca mai: se un video manca, si vede lo sprite. */
+let lottaAperta=false,LT=null;const clipCache={};
+const mostroTratta=()=>{if(!S||S.done)return null;const id=(D.squadre[S.team].mostri||{})[S.idx];
+  if(!id||S.lotte[S.idx])return null;return D.mostri.find(m=>m.id===id)||null;};
+const clipUrl=(m,f)=>m.cartella+f;
+function preparaClip(m){[m.intro,m.ko,m.vittoria,...m.passi.flatMap(p=>[p.ok,p.ko,p.attesa])].filter(Boolean).forEach(f=>{
+  const u=clipUrl(m,f);if(clipCache[u])return;clipCache[u]='…';
+  fetch(u).then(r=>{if(!r.ok)throw 0;return r.blob();}).then(b=>{clipCache[u]=URL.createObjectURL(b);}).catch(()=>{delete clipCache[u];});});}
+function suono(tipo){try{_ac=_ac||new (window.AudioContext||window.webkitAudioContext)();const t0=_ac.currentTime,o=_ac.createOscillator(),g=_ac.createGain();
+  const P={segno:[660,880,.12,.08,'triangle'],ok:[520,1040,.18,.08,'sine'],ko:[160,40,.5,.2,'sawtooth']}[tipo];
+  o.type=P[4];o.frequency.setValueAtTime(P[0],t0);o.frequency.exponentialRampToValueAtTime(P[1],t0+P[2]);
+  g.gain.setValueAtTime(P[3],t0);g.gain.exponentialRampToValueAtTime(.0001,t0+P[2]+.05);o.connect(g);g.connect(_ac.destination);o.start();o.stop(t0+P[2]+.1);}catch(e){}}
+const vibra=p=>{try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}};
+
+function apriLotta(m,dopo,allArrivo){
+  if(lottaAperta)return;lottaAperta=true;stopAudio();preparaClip(m);
+  LT={m,dopo,i:0,ko:0,aperta:false,timer:null};
+  const o=$('#lotta');o.classList.add('on');o.classList.remove('nofilm','rosso');
+  $('#lnome').textContent=m.nome;lsan();draw($('#lspr'),m.id);
+  const v=$('#lv');v.removeAttribute('src');v.load();
+  vibra([80,60,80]);
+  const mosse=[...new Set(m.passi.map(p=>p.mossa))].map(IC.dir).join('');
+  carta(`<h2>${allArrivo?'Vi sbarra la porta':'Qualcosa vi sbarra la strada'}</h2>
+    <p class="fr">${m.frase}</p>
+    <p>Quando compare il segno, scorrete il dito in quella direzione. La croce vuol dire: toccate lo schermo. Avete poco più di un secondo.</p>
+    <div class="mosse">${mosse}</div>
+    <button class="primary" id="laff">Affrontatelo</button>
+    ${S.inv.sale>0?`<button class="quiet" id="lsale">Gettate il ${D.reliquie.sale.nome.toLowerCase()} e passate</button>`:''}`);
+  speak('mostro_'+m.id,m.frase,'ombra');
+  $('#laff').onclick=()=>{stopAudio();carta('');sub('');gioca(m.intro,()=>decisione(0));};
+  if(S.inv.sale>0)$('#lsale').onclick=()=>{S.inv.sale--;esito('sale');};
+}
+function lsan(){$('#lsan').textContent='Sanità '+S.san;}
+function carta(html){const c=$('#lcard');c.innerHTML=html;c.classList.toggle('on',!!html);}
+function sub(t){$('#lsub').textContent=t||'';}
+function gioca(f,fatto){
+  const o=$('#lotta'),v=$('#lv');let finito=false;const fine=()=>{if(finito)return;finito=true;v.onended=v.onerror=null;fatto();};
+  if(!f){setTimeout(fine,200);return;}
+  const u=clipUrl(LT.m,f),src=clipCache[u]&&clipCache[u]!=='…'?clipCache[u]:u;
+  const ripiego=()=>{o.classList.add('nofilm');o.classList.remove('colpo');void o.offsetWidth;o.classList.add('colpo');setTimeout(fine,1200);};
+  o.classList.remove('nofilm');v.loop=false;v.onended=fine;v.onerror=ripiego;v.src=src;
+  const pr=v.play();if(pr)pr.catch(()=>{v.muted=true;v.play().catch(ripiego);});
+}
+function finestra(p){/* con poca sanità si ha meno tempo: fino al 70% */
+  return Math.round((p.finestra||1500)*(0.7+0.3*S.san/D.sanita.iniziale)*(TEST&&new URLSearchParams(location.search).has('lento')?3:1));}
+function decisione(i){
+  LT.i=i;const p=LT.m.passi[i],ms=finestra(p),v=$('#lv');
+  if(p.attesa){v.loop=true;v.src=clipCache[clipUrl(LT.m,p.attesa)]||clipUrl(LT.m,p.attesa);v.play().catch(()=>{});}
+  const c=$('#lcue');c.innerHTML=IC.dir(p.mossa);c.setAttribute('aria-label',p.mossa==='tocco'?'Toccate':'Scorrete '+(p.mossa==='giu'?'giù':'verso '+p.mossa));c.classList.add('on');
+  sub(p.testo);suono('segno');vibra(30);
+  const b=$('#lbar'),bi=b.querySelector('i');b.classList.add('on');bi.style.transition='none';bi.style.width='100%';void bi.offsetWidth;
+  bi.style.transition=`width ${ms}ms linear`;bi.style.width='0%';
+  LT.aperta=true;LT.timer=setTimeout(()=>mossa('tempo'),ms);
+}
+function chiudiFinestra(){LT.aperta=false;clearTimeout(LT.timer);$('#lcue').classList.remove('on');$('#lbar').classList.remove('on');}
+function mossa(g){
+  if(!LT||!LT.aperta)return;chiudiFinestra();const m=LT.m,i=LT.i,p=m.passi[i],ultimo=i===m.passi.length-1;
+  if(g===p.mossa){suono('ok');vibra(20);sub('');
+    const poi=()=>ultimo?gioca(m.vittoria,()=>esito('vinto')):decisione(i+1);
+    if(p.ok)gioca(p.ok,poi);else poi();return;}
+  /* sconfitta */
+  suono('ko');vibra([200,80,300]);LT.ko++;perdiSanita(m.sanita_ko);save();lsan();
+  sub(g==='tempo'?'Troppo lenti.':'Mossa sbagliata.');
+  const o=$('#lotta');o.classList.add('rosso');setTimeout(()=>o.classList.remove('rosso'),600);
+  gioca(p.ko||m.ko,()=>{sub('');
+    if(LT.ko>=(m.sconfitte_max||2))return esito('fuga');
+    carta(`<h2>Vi ha preso</h2><p>Sanità -${m.sanita_ko}. Ancora una sconfitta e dovrete fuggire.</p>
+      <button class="primary" id="lrip">Di nuovo</button>`);
+    $('#lrip').onclick=()=>{carta('');gioca(i===0?m.intro:m.passi[i-1].ok,()=>decisione(i));};});
+}
+function esito(e){
+  const m=LT.m,R=D.reliquie;S.lotte[S.idx]=e;let h;
+  if(e==='vinto'){S.pts+=m.punti||0;S.inv[m.premio]=(S.inv[m.premio]||0)+1;
+    h=`<h2>${m.nome} è sconfitto</h2><p class="fr">${m.esito_vinto}</p><p>+${m.punti||0} punti. Reliquia: <b style="color:var(--gold)">${R[m.premio].nome}</b>. ${R[m.premio].desc}</p>`;}
+  else if(e==='fuga'){perdiSanita(D.sanita.fuga);
+    h=`<h2>Fuggite</h2><p class="fr">${m.esito_fuga}</p><p>Sanità -${D.sanita.fuga}. Nessuna reliquia.</p>`;}
+  else h=`<h2>Il sale brucia</h2><p class="fr">${m.nome} arretra sibilando e vi lascia passare.</p><p>Nessuna reliquia, nessuna ferita.</p>`;
+  save();lsan();sub('');
+  carta(h+'<button class="primary" id="lvia">Proseguite</button>');
+  $('#lvia').onclick=chiudiLotta;
+}
+function chiudiLotta(){const v=$('#lv');v.pause();v.removeAttribute('src');v.load();
+  $('#lotta').classList.remove('on');carta('');lottaAperta=false;const d=LT.dopo;LT=null;aggiornaSanita();d&&d();}
+
+/* gesti: scorrimento in 4 direzioni o tocco */
+(()=>{const o=$('#lotta');let x0=0,y0=0;
+  o.addEventListener('pointerdown',e=>{if(e.target.closest('.lcard'))return;x0=e.clientX;y0=e.clientY;});
+  o.addEventListener('pointerup',e=>{if(e.target.closest('.lcard')||!LT||!LT.aperta)return;const dx=e.clientX-x0,dy=e.clientY-y0;
+    if(Math.max(Math.abs(dx),Math.abs(dy))<28)return mossa('tocco');
+    mossa(Math.abs(dx)>Math.abs(dy)?(dx>0?'destra':'sinistra'):(dy>0?'giu':'su'));});
+  document.addEventListener('keydown',e=>{if(!LT||!LT.aperta)return;
+    const k={ArrowLeft:'sinistra',ArrowRight:'destra',ArrowUp:'su',ArrowDown:'giu',' ':'tocco',Enter:'tocco'}[e.key];if(k){e.preventDefault();mossa(k);}});
+})();
 
 /* ================= Minigiochi ================= */
 const mgState=t=>S.mg[t.id]||(S.mg[t.id]={});

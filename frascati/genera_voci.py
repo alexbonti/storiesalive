@@ -27,6 +27,8 @@ for t in d["tappe"] + [d["finale"]]:
     jobs.append((t["id"] + "_frammento", t["personaggio"], t["frammento"]))
     for i, h in enumerate(t["suggerimenti"], 1):
         jobs.append((f"{t['id']}_sugg{i}", "custode", h))
+for m in d.get("mostri", []):
+    jobs.append(("mostro_" + m["id"], "ombra", m["frase"]))
 
 if not KEY or not all(VOCI.values()):
     sys.exit("Mancano ELEVENLABS_API_KEY o gli id delle voci (VOCE_CARDINALE, VOCE_CUSTODE, VOCE_OMBRA).")
