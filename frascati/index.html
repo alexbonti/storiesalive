@@ -252,6 +252,7 @@ body.folle::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:
   <video id="lv" playsinline webkit-playsinline preload="auto"></video>
   <canvas id="lspr" width="16" height="16" aria-hidden="true"></canvas>
   <div class="lhud"><span class="n" id="lnome"></span><span class="s" id="lsan"></span></div>
+  <button id="lbypass" class="quiet" style="display:none;position:absolute;z-index:4;top:calc(52px + env(safe-area-inset-top));right:12px;min-height:38px;padding:0 12px;font-size:14px;border-color:var(--gold);color:var(--gold);background:rgba(10,15,12,.7)">Test: salta lo scontro</button>
   <div id="lcue" role="img"></div>
   <div id="lsub"></div>
   <div id="lbar"><i></i></div>
@@ -429,7 +430,7 @@ function renderEnigma(p,t,ver){
   const fin=S.idx===D.tappe.length;
   const lett=fin?`<p class="dist" style="margin:0 0 6px">Lettere raccolte, nell'ordine in cui le avete trovate:</p>
     <div class="display" style="font-size:30px;letter-spacing:.3em;margin-bottom:12px">${Object.values(S.lettere).join('')}</div>`:'';
-  p.innerHTML=`<p class="riddle">${t.enigma}</p><div class="mg" id="mg"></div>${lett}
+  p.innerHTML=`<p class="riddle">${t.enigma}</p><div class="mg" id="mg"></div>${TEST?'<button class="quiet" id="bypass" style="width:100%;margin-bottom:10px;border-color:var(--gold);color:var(--gold)">Test: salta questo gioco</button>':''}${lett}
     <form class="answer" id="f"><input type="text" id="ans" autocomplete="off" autocapitalize="characters" aria-label="La risposta" placeholder="${gated?'Prima risolvete il puzzle':'La risposta'}" ${gated?'disabled':''}>
       <button class="primary" id="check" ${gated?'disabled':''}>Controlla</button></form>
     <div class="msg" id="msg" role="status"></div>
@@ -438,6 +439,8 @@ function renderEnigma(p,t,ver){
   inventario();
   $('#f').onsubmit=e=>{e.preventDefault();controlla();};
   $('#hint').onclick=usaMoneta;
+  if(TEST)$('#bypass').onclick=()=>{const st=S.mg[t.id]||(S.mg[t.id]={});st.solved=true;save();
+    const a=$('#ans');a.disabled=false;a.value=t.risposte[0];$('#check').disabled=false;controlla();};
   aggiornaMonete();
   for(let i=0;i<S.hn;i++)mostraHint(i,false);
   const mg=$('#mg');
@@ -518,7 +521,9 @@ const vibra=p=>{try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}};
 
 function apriLotta(m,dopo,allArrivo){
   if(lottaAperta)return;lottaAperta=true;stopAudio();preparaClip(m);
-  LT={m,dopo,i:0,ko:0,aperta:false,timer:null};
+  LT={m,dopo,i:0,ko:0,aperta:false,timer:null,chiuso:false};
+  const by=$('#lbypass');by.style.display=TEST?'':'none';
+  by.onclick=()=>{if(!LT||LT.chiuso||S.lotte[S.idx])return;LT.chiuso=true;chiudiFinestra();const v=$('#lv');v.pause();sub('');carta('');esito('vinto');};
   const o=$('#lotta');o.classList.add('on');o.classList.remove('nofilm','rosso');
   $('#lnome').textContent=m.nome;lsan();draw($('#lspr'),m.id);
   const v=$('#lv');v.removeAttribute('src');v.load();
@@ -538,7 +543,7 @@ function lsan(){$('#lsan').textContent='Sanità '+S.san;}
 function carta(html){const c=$('#lcard');c.innerHTML=html;c.classList.toggle('on',!!html);}
 function sub(t){$('#lsub').textContent=t||'';}
 function gioca(f,fatto){
-  const o=$('#lotta'),v=$('#lv');let finito=false;const fine=()=>{if(finito)return;finito=true;v.onended=v.onerror=null;fatto();};
+  const o=$('#lotta'),v=$('#lv');let finito=false;const fine=()=>{if(finito||!LT||LT.chiuso)return;finito=true;v.onended=v.onerror=null;fatto();};
   if(!f){setTimeout(fine,200);return;}
   const u=clipUrl(LT.m,f),src=clipCache[u]&&clipCache[u]!=='…'?clipCache[u]:u;
   const ripiego=()=>{o.classList.add('nofilm');o.classList.remove('colpo');void o.offsetWidth;o.classList.add('colpo');setTimeout(fine,1200);};
@@ -588,8 +593,8 @@ function chiudiLotta(){const v=$('#lv');v.pause();v.removeAttribute('src');v.loa
 
 /* gesti: scorrimento in 4 direzioni o tocco */
 (()=>{const o=$('#lotta');let x0=0,y0=0;
-  o.addEventListener('pointerdown',e=>{if(e.target.closest('.lcard'))return;x0=e.clientX;y0=e.clientY;});
-  o.addEventListener('pointerup',e=>{if(e.target.closest('.lcard')||!LT||!LT.aperta)return;const dx=e.clientX-x0,dy=e.clientY-y0;
+  o.addEventListener('pointerdown',e=>{if(e.target.closest('.lcard,#lbypass'))return;x0=e.clientX;y0=e.clientY;});
+  o.addEventListener('pointerup',e=>{if(e.target.closest('.lcard,#lbypass')||!LT||!LT.aperta)return;const dx=e.clientX-x0,dy=e.clientY-y0;
     if(Math.max(Math.abs(dx),Math.abs(dy))<28)return mossa('tocco');
     mossa(Math.abs(dx)>Math.abs(dy)?(dx>0?'destra':'sinistra'):(dy>0?'giu':'su'));});
   document.addEventListener('keydown',e=>{if(!LT||!LT.aperta)return;

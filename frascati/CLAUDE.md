@@ -20,7 +20,7 @@ Web app statica (HTML/CSS/JS vanilla + Leaflet vendorizzato), pensata per telefo
 - Cutscene: 6 scene in pixel art animate dal codice (`SCENE` in index.html, tela 120x160, nessun file video): `intro` dopo la scelta squadra, `t1`-`t4` dopo aver risolto ogni tappa (legate alla tappa, quindi valgono per tutti gli ordini), `finale` prima della schermata finale. Didascalie in `storia.json` → `cutscene`. Tasto Salta, poi Continua; con `prefers-reduced-motion` si vede il fotogramma finale. In `?test` ci sono i pulsanti "Scena …" per rivederle.
 - Sanità: parte da 100. Errore -5. Sotto 60 il testo trema, sotto 30 lo schermo si arrossa. Con poca Sanità le finestre dei gesti si accorciano fino al 70%. Punteggio finale = punti + Sanità.
 - Reliquie: Rosario d'osso (+25 Sanità), Lanterna cieca (suggerimento senza penalità), Sale benedetto (salta un mostro senza premio).
-- Test: aggiungere `?test` all'URL (simula presenza, reset, tocco sulla mappa per leggere le coordinate, "fai apparire il mostro"). `?test&lento` triplica le finestre dei gesti.
+- Test: aggiungere `?test` all'URL (simula presenza, reset, tocco sulla mappa per leggere le coordinate, "fai apparire il mostro"). `?test&lento` triplica le finestre dei gesti. In `?test` ogni enigma ha "Test: salta questo gioco" (risolve e invia la risposta giusta, con i punti normali) e ogni scontro ha "Test: salta lo scontro" (vittoria con reliquia).
 - Stato in localStorage `diario_cardinale_v2`.
 
 ## Da fare
