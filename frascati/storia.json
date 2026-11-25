@@ -319,5 +319,92 @@
    "esito_vinto": "Senza spigoli da cui uscire, il cane si ripiega in un angolo e sparisce.",
    "esito_fuga": "Correte verso la piazza tonda. Lì non può seguirvi."
   }
- ]
+ ],
+ "cutscene": {
+  "_nota": "Didascalie delle cutscene: [secondo in cui compare, testo]. Le animazioni sono nel codice (SCENE in index.html), durate comprese.",
+  "intro": [
+   [
+    0.3,
+    "Frascati, 1603."
+   ],
+   [
+    3.2,
+    "Il cardinale entra da solo nella galleria che non dovrebbe esistere."
+   ],
+   [
+    6.6,
+    "Stanotte il suo diario è in pezzi, sparsi per la città."
+   ]
+  ],
+  "t1": [
+   [
+    0.4,
+    "Il sigillo si ricompone."
+   ],
+   [
+    4.6,
+    "La villa non guarda la città. Guarda la valle, verso Roma."
+   ],
+   [
+    6.8,
+    "Sotto di lei, qualcosa dorme. E ha aperto un occhio."
+   ]
+  ],
+  "t2": [
+   [
+    0.4,
+    "I cavalli non entrano nelle scuderie dopo il tramonto."
+   ],
+   [
+    4.6,
+    "Il cardinale diceva che fosse l'acqua."
+   ],
+   [
+    7.0,
+    "Non era l'acqua."
+   ]
+  ],
+  "t3": [
+   [
+    0.4,
+    "Un principe venuto da lontano, senza regno."
+   ],
+   [
+    3.6,
+    "Una corona che nessuno porta più."
+   ],
+   [
+    6.4,
+    "Esistono porte che una benedizione non chiude, ma annuncia."
+   ]
+  ],
+  "t4": [
+   [
+    0.4,
+    "Una cupola dipinta su un soffitto piatto."
+   ],
+   [
+    3.4,
+    "Dal punto giusto sembra vera."
+   ],
+   [
+    6.2,
+    "Dal punto giusto, qualcosa risponde."
+   ]
+  ],
+  "finale": [
+   [
+    0.4,
+    "Quattro lettere. Una parola."
+   ],
+   [
+    4.6,
+    "Il cardinale la pronunciò una volta sola."
+   ],
+   [
+    7.4,
+    "La Porta si chiude."
+   ]
+  ]
+ }
 }
