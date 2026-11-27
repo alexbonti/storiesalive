@@ -179,8 +179,8 @@
    "n": 5,
    "id": "t5",
    "luogo": "Piazza San Rocco",
-   "lat": 41.8076,
-   "lng": 12.6779,
+   "lat": 41.80964,
+   "lng": 12.67927,
    "raggio": 60,
    "personaggio": "cardinale",
    "frammento": "A San Rocco, protettore degli appestati, feci portare nove calici di vino benedetto. Il sacrestano giurò che erano tutti uguali. Uno pesava di più. Non era il vino: era ciò che beve chi sta sotto Roma.",
@@ -189,7 +189,7 @@
     "contagio"
    ],
    "premio": "rosario",
-   "verifica": "Piazza San Rocco (chiesa di Santa Maria in Vivario): le coordinate sono provvisorie e non verificate. Controllarle sul posto con ?test toccando la mappa al centro della piazza.",
+   "verifica": "Piazza San Rocco: coordinate da fonte esterna (41.80964, 12.67927), non ancora controllate sul posto con ?test. Verificare che il raggio di 60 m copra la piazza.",
    "gioco": "calici",
    "intro_gioco": "Toccate un calice per metterlo sul piatto sinistro, poi sul destro, poi toglierlo. Avete due pesate, poi indicate il calice avvelenato.",
    "suggerimenti": [
