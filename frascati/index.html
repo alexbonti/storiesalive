@@ -104,6 +104,18 @@ form.answer button{flex:none}
 .seal .word{font-family:var(--display);font-size:30px;line-height:1.1}
 .seal .sub{color:var(--mute);font-size:16px}
 
+/* cavallo e calici */
+.board{display:block;width:100%;max-width:300px;aspect-ratio:1;margin:0 auto;border-radius:10px;border:1px solid var(--line);touch-action:manipulation;image-rendering:pixelated}
+.slots{display:flex;justify-content:center;gap:6px;margin:10px 0 2px}
+.slot{width:38px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:8px;font-family:var(--display);font-size:26px;color:var(--bone);background:var(--ink)}
+.slot.on{border-color:var(--verd);color:var(--gold)}
+.scale{display:block;width:100%;max-width:300px;margin:0 auto}
+.cups{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;margin:6px auto 0}
+.cup{flex-direction:column;min-height:62px;padding:4px 0;gap:0;color:var(--mute);font-weight:700}
+.cup span{font-size:15px;line-height:1}
+.cup.l{border-color:var(--gold);color:var(--gold)}.cup.r{border-color:var(--verd);color:var(--verd)}
+.cup.scelta{border-style:dashed;color:var(--bone)}
+.cup.sol{border-color:var(--verd);background:var(--ink-3);color:var(--verd);opacity:1}
 /* minigames */
 .mg{margin:0 0 6px}
 .mg .cap{color:var(--mute);font-size:15px;margin:8px 0 0;text-align:center}
@@ -424,9 +436,9 @@ function render(){
     $('#avanti').onclick=()=>{S.phase='enigma';save();render();};
   } else if(S.phase==='enigma'){renderEnigma(p,t,ver);}
   else if(S.phase==='risolta'){
-    const fin=S.idx===D.tappe.length,guad=S.ultimi||0;
-    p.innerHTML=`<div class="seal">${IC.seal(fin?'✦':t.lettera)}<div><div class="word">${fin?'La Porta si chiude':t.risposte[0].toUpperCase()}</div>
-      <div class="sub">${fin?'Dite la parola tutti insieme.':'Segnatevi la lettera '+t.lettera+': servirà al finale.'} +${guad} punti</div></div></div>
+    const fin=S.idx===D.tappe.length,guad=S.ultimi||0,prem=!fin&&t.premio?` Reliquia: ${D.reliquie[t.premio].nome}.`:'';
+    p.innerHTML=`<div class="seal">${IC.seal(fin||!t.lettera?'✦':t.lettera)}<div><div class="word">${fin?'La Porta si chiude':t.risposte[0].toUpperCase()}</div>
+      <div class="sub">${fin?'Dite la parola tutti insieme.':(t.lettera?'Segnatevi la lettera '+t.lettera+': servirà al finale.':'Questo frammento non porta lettere: serve a capire la storia.')} +${guad} punti.${prem}</div></div></div>
       <button class="primary" id="next" style="width:100%">${fin?"Aprite l'ultimo frammento":'Prossima tappa'}</button>`;
     $('#next').onclick=avanza;
   }
@@ -436,7 +448,7 @@ function vaiScena(){const m=mostroTratta();
   S.phase='scena';save();render();}
 
 function renderEnigma(p,t,ver){
-  const gated=['tessere','barili','lucchetto','specchio'].includes(t.gioco)&&!(S.mg[t.id]&&S.mg[t.id].solved);
+  const gated=['tessere','barili','lucchetto','specchio','cavallo','calici'].includes(t.gioco)&&!(S.mg[t.id]&&S.mg[t.id].solved);
   const fin=S.idx===D.tappe.length;
   const lett=fin?`<p class="dist" style="margin:0 0 6px">Lettere raccolte, nell'ordine in cui le avete trovate:</p>
     <div class="display" style="font-size:30px;letter-spacing:.3em;margin-bottom:12px">${Object.values(S.lettere).join('')}</div>`:'';
@@ -454,7 +466,7 @@ function renderEnigma(p,t,ver){
   aggiornaMonete();
   for(let i=0;i<S.hn;i++)mostraHint(i,false);
   const mg=$('#mg');
-  if(t.gioco==='tessere')mountTessere(mg,t);else if(t.gioco==='ruota')mountRuota(mg,t);else if(t.gioco==='barili')mountBarili(mg,t);else if(t.gioco==='lucchetto')mountLucchetto(mg,t);else if(t.gioco==='specchio')mountSpecchio(mg,t);
+  if(t.gioco==='tessere')mountTessere(mg,t);else if(t.gioco==='ruota')mountRuota(mg,t);else if(t.gioco==='barili')mountBarili(mg,t);else if(t.gioco==='lucchetto')mountLucchetto(mg,t);else if(t.gioco==='specchio')mountSpecchio(mg,t);else if(t.gioco==='cavallo')mountCavallo(mg,t);else if(t.gioco==='calici')mountCalici(mg,t);
 }
 function sbloccaInput(){const a=$('#ans');if(!a)return;a.disabled=false;a.placeholder='La risposta';$('#check').disabled=false;a.focus({preventScroll:true});}
 
@@ -477,7 +489,7 @@ function controlla(){
   const t=cur(),v=norm($('#ans').value);if(!v)return;
   const ok=t.risposte.map(norm).some(r=>v===r||v.split(' ').includes(r));
   if(ok){const g=Math.max(0,D.punti.base-D.punti.suggerimento*(S.hn-S.hl)-D.punti.errore*S.er);
-    S.pts+=g;S.ultimi=g;S.phase='risolta';if(t.lettera)S.lettere[t.n]=t.lettera;save();render();}
+    S.pts+=g;S.ultimi=g;S.phase='risolta';if(t.lettera)S.lettere[t.n]=t.lettera;if(t.premio)S.inv[t.premio]=(S.inv[t.premio]||0)+1;save();render();}
   else{S.pen+=D.penalita.errore;S.er++;perdiSanita(D.sanita.errore);save();glitch();
     const m=$('#msg');m.className='msg ko';m.textContent=`No. Penalità di ${D.penalita.errore/60} minuto, Sanità -${D.sanita.errore}.`;$('#ans').select();}
 }
@@ -774,6 +786,27 @@ t4:{dur:10,beats:[[3.4,'ok'],[6.2,'segno'],[7.6,'segno']],draw(t){
   if(t>3.4&&t<3.9)flash(.3*(1-(t-3.4)/.5),'#fff6cf');
 }},
 
+/* ---------- Tappa 5: i nove calici di San Rocco ---------- */
+t5:{dur:10,beats:[[3.4,'segno'],[6.4,'ko']],draw(t){
+  sky('#06090d','#112033');stars(t);moon(98,20);colline(C.ground);cipresso(8,28);cipresso(112,28);
+  const W='#22372a',W2='#2f4a38';
+  R(30,56,48,40,W);for(let r=0;r<12;r++){const w=Math.round(2+r*2);R(54-w,44+r,w*2,1,r<1?W2:'#18291f');}
+  R(78,34,16,62,W);R(78,34,16,1,W2);R(82,40,8,10,'#050a07');ell(86,48,3,3,C.gold);R(78,28,16,6,'#18291f');R(85,22,2,6,W);R(83,24,6,2,W);
+  R(46,70,16,26,'#0a0603');ell(54,70,8,6,'#0a0603');const lum=.5+.5*Math.sin(t*5);R(50,76,8,12,mixc('#2a1608',C.gold,.3+.3*lum));
+  R(34,66,8,8,Math.sin(t*3)>-.5?C.gold:'#3a2f16');R(66,66,8,8,Math.sin(t*3+2)>-.5?C.gold:'#3a2f16');
+  R(12,100,96,6,'#1a271f');R(14,106,92,3,'#0e1a13');R(18,109,6,26,'#0e1a13');R(96,109,6,26,'#0e1a13');
+  const CUP=[".ggggg.","gwwwwwg",".gwwwg.","..ggg..","...g...","...g...",".ggggg."];
+  for(let i=0;i<9;i++){
+    const ap=seg(t,1+i*.25,1.8+i*.25);if(ap<=0)continue;
+    const veleno=i===4&&t>6.2,sink=veleno?Math.round(seg(t,6.2,7)*3):0;
+    const yy=93+sink-Math.round((1-ap)*14),px=17+i*11;
+    if(veleno)glow(px+3,yy+3,14,C.verd,.3+.15*Math.sin(t*4));
+    bmp(CUP,{g:'#c8a557',w:veleno?'#0b2a1c':'#7a2432'},px,yy,1,ap);
+    if(veleno&&Math.floor(t*6)%2===0){R(px+2,yy-3-Math.floor((t*10)%6),1,1,C.verd);R(px+4,yy-6-Math.floor((t*7)%5),1,1,C.verd);}}
+  if(t>3.4&&t<3.9)flash(.18*(1-(t-3.4)/.5),'#fff6cf');
+  if(t>6.2&&t<6.7)flash(.25*(1-(t-6.2)/.5),C.verd);
+}},
+
 /* ---------- Finale: le quattro lettere e la Porta ---------- */
 finale:{dur:11,beats:[[1.2,'segno'],[2.2,'segno'],[3.2,'segno'],[4.2,'segno'],[7.4,'porta'],[8.2,'ok']],draw(t){
   sky('#05090a','#0e1f16');R(0,140,CW,20,'#070d09');
@@ -853,7 +886,105 @@ function mountTessere(el,t){
     save();paint();cap();};
 }
 
-/* --- Ruota cifrata --- */
+/* --- Percorso del cavallo: scacchiera di lettere (Scuderie) --- */
+function mountCavallo(el,t){
+  const st=mgState(t),G=t.griglia,N=G.length,CS=300/N,L=(r,c)=>G[r][c],start=t.partenza[0]*N+t.partenza[1];
+  if(!st.p)st.p=[start];
+  el.innerHTML=`<p class="cap" style="text-align:left;margin:0 0 8px">${t.intro_gioco}</p>
+    <canvas id="board" class="board" width="300" height="300" role="img" aria-label="Scacchiera di lettere: toccate una casella dove il cavallo può saltare"></canvas>
+    <div class="slots" id="slots" aria-live="polite"></div><p class="cap" id="cap"></p>
+    <div class="row" style="margin-top:6px"><button id="bk" class="quiet">Un salto indietro</button><button id="rs" class="quiet">Da capo</button></div>`;
+  const cv=$('#board'),cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;
+  const rc=i=>[Math.floor(i/N),i%N],cen=i=>{const [r,c]=rc(i);return [c*CS+CS/2,r*CS+CS/2];};
+  const knight=(a,b)=>{const [r1,c1]=rc(a),[r2,c2]=rc(b),dr=Math.abs(r1-r2),dc=Math.abs(c1-c2);return (dr===1&&dc===2)||(dr===2&&dc===1);};
+  const cur=()=>st.p[st.p.length-1],legal=i=>!st.solved&&st.p.length<6&&!st.p.includes(i)&&knight(cur(),i);
+  let anim=null;
+  const paint=()=>{
+    cx.clearRect(0,0,300,300);
+    for(let i=0;i<N*N;i++){const [r,c]=rc(i),x=c*CS,y=r*CS,vis=st.p.includes(i);
+      cx.fillStyle=vis?'#1f3d2c':((r+c)%2?'#16251c':'#0f1b14');cx.fillRect(x,y,CS,CS);
+      if(vis){cx.strokeStyle='#78b18f';cx.lineWidth=1.5;cx.strokeRect(x+2,y+2,CS-4,CS-4);}
+      const here=i===cur();
+      cx.fillStyle=vis?'#ece6d6':'#a7b5a3';cx.font=`${here?18:26}px "IM Fell English",Georgia,serif`;cx.textAlign='center';cx.textBaseline='middle';
+      cx.fillText(L(r,c),x+CS/2,y+(here?14:CS/2+1));
+      if(legal(i)){cx.fillStyle='#c8a557';cx.beginPath();cx.arc(x+CS-9,y+9,4,0,6.3);cx.fill();}
+      if(i===start){cx.strokeStyle='#c8a557';cx.lineWidth=2.5;cx.beginPath();cx.arc(x+10,y+CS-13,6,0.2*Math.PI,0.8*Math.PI,true);cx.stroke();cx.beginPath();cx.moveTo(x+4.5,y+CS-17);cx.lineTo(x+4.5,y+CS-22);cx.moveTo(x+15.5,y+CS-17);cx.lineTo(x+15.5,y+CS-22);cx.stroke();}}
+    cx.strokeStyle='rgba(200,165,87,.55)';cx.lineWidth=2;cx.setLineDash([4,4]);cx.beginPath();
+    st.p.forEach((i,k)=>{const [x,y]=cen(i);k?cx.lineTo(x,y):cx.moveTo(x,y);});cx.stroke();cx.setLineDash([]);
+    let [hx,hy]=cen(cur()),hop=0;
+    if(anim){const k=Math.min(1,(performance.now()-anim.t0)/230),[x0,y0]=cen(anim.from);hx=x0+(hx-x0)*k;hy=y0+(hy-y0)*k;hop=Math.sin(k*Math.PI)*16;}
+    X=cx;bmp(HORSE,HP,hx-16,hy-4-hop+2,2);
+  };
+  const frame=()=>{paint();if(anim){if(performance.now()-anim.t0<240)requestAnimationFrame(frame);else{anim=null;paint();}}};
+  const word=()=>st.p.map(i=>{const [r,c]=rc(i);return L(r,c);}).join('');
+  const aggiorna=()=>{
+    $('#slots').innerHTML=Array.from({length:6},(_,k)=>`<span class="slot${k<st.p.length?' on':''}">${k<st.p.length?word()[k]:''}</span>`).join('');
+    $('#bk').disabled=st.solved||st.p.length<2;$('#rs').disabled=st.solved||st.p.length<2;
+    const cap=$('#cap');
+    if(st.solved){cap.textContent='Il cavallo ha scritto la parola.';cap.className='cap won';}
+    else if(st.p.length===6){const w=word();cap.textContent=(t.trappole&&t.trappole[w])||`Il cavallo ha scritto «${w}». Non è la parola giusta: tornate indietro.`;cap.className='cap';}
+    else{cap.textContent=`Salto ${st.p.length-1} di 5.`;cap.className='cap';}
+  };
+  const vai=i=>{
+    if(!legal(i))return;anim={from:cur(),t0:performance.now()};st.p.push(i);tick();
+    if(st.p.length===6&&word()===t.parola){st.solved=true;sbloccaInput();}
+    save();aggiorna();frame();};
+  cv.onclick=e=>{const r=cv.getBoundingClientRect(),c=Math.floor((e.clientX-r.left)/r.width*N),rr=Math.floor((e.clientY-r.top)/r.height*N);vai(rr*N+c);};
+  $('#bk').onclick=()=>{if(st.solved||st.p.length<2)return;st.p.pop();save();aggiorna();paint();};
+  $('#rs').onclick=()=>{if(st.solved)return;st.p=[start];save();aggiorna();paint();};
+  paint();aggiorna();
+}
+
+/* --- Nove calici, una bilancia, due pesate (San Rocco) --- */
+const CALICI_PAROLE=['PACE','ONORE','GLORIA','FEDE','SPERANZA','CARITA','SALUTE','FORTUNA'];
+function mountCalici(el,t){
+  const st=mgState(t),ans=t.risposte[0].toUpperCase();
+  const nuovo=()=>{st.p=Math.floor(Math.random()*9);st.w=0;st.a=Array(9).fill(0);st.res=null;
+    const altre=[...CALICI_PAROLE].sort(()=>Math.random()-.5);st.nomi=Array.from({length:9},(_,i)=>i===st.p?ans:altre.pop());};
+  if(st.p===undefined)nuovo();
+  const coppa='<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12c0 6-2.5 9-6 9S6 9 6 3z"/><path d="M12 12v6M8 21h8M8 21c0-2 1.5-3 4-3s4 1 4 3"/></svg>';
+  el.innerHTML=`<p class="cap" style="text-align:left;margin:0 0 6px">${t.intro_gioco}</p>
+    <svg id="scale" class="scale" viewBox="0 0 300 150" role="img" aria-label="Bilancia a due piatti"></svg>
+    <div class="cups" id="cups">${Array.from({length:9},(_,i)=>`<button class="cup" data-i="${i}" aria-label="Calice ${i+1}">${coppa}<span>${i+1}</span></button>`).join('')}</div>
+    <p class="cap" id="cap" style="min-height:3em"></p>
+    <div class="row"><button id="pesa" class="primary"></button><button id="vuota" class="quiet">Svuota i piatti</button></div>`;
+  let ang=0;
+  const scala=()=>{const th=ang*Math.PI/180,cs=Math.cos(th),sn=Math.sin(th),lx=150-120*cs,ly=45-120*sn,rx=150+120*cs,ry=45+120*sn;
+    const pan=(x,y,lista,col)=>`<g><path d="M${x} ${y} L${x-34} ${y+44} M${x} ${y} L${x+34} ${y+44}" stroke="#a7b5a3" stroke-width="1"/><path d="M${x-40} ${y+44} h80 q-6 14 -40 14 t-40 -14z" fill="#1a271f" stroke="${col}" stroke-width="2"/>
+      <text x="${x}" y="${y+40}" text-anchor="middle" font-size="15" fill="#ece6d6" font-family="Alegreya Sans,sans-serif" font-weight="700">${lista.map(i=>i+1).join(' ')}</text></g>`;
+    const L=st.a.map((v,i)=>v===1?i:-1).filter(i=>i>=0),Rr=st.a.map((v,i)=>v===2?i:-1).filter(i=>i>=0);
+    $('#scale').innerHTML=`<path d="M146 45 h8 l6 100 h-20z" fill="#1a271f" stroke="#2c4234"/><path d="M${lx} ${ly} L${rx} ${ry}" stroke="#c8a557" stroke-width="5" stroke-linecap="round"/><circle cx="150" cy="45" r="6" fill="#c8a557"/>${pan(lx,ly,L,'#c8a557')}${pan(rx,ry,Rr,'#78b18f')}`;};
+  const alvo=target=>{const a0=ang,t0=performance.now();const f=now=>{const k=Math.min(1,(now-t0)/450);ang=a0+(target-a0)*k;scala();if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);};
+  const sceglie=()=>st.w>=2&&!st.solved;
+  const aggiorna=()=>{
+    el.querySelectorAll('.cup').forEach(b=>{const i=+b.dataset.i;b.classList.toggle('l',st.a[i]===1);b.classList.toggle('r',st.a[i]===2);b.classList.toggle('scelta',sceglie());
+      b.classList.toggle('sol',!!st.solved&&i===st.p);b.disabled=!!st.solved&&i!==st.p;});
+    const pesa=$('#pesa');pesa.textContent=st.solved?'Calice trovato':(sceglie()?'Indicate il calice avvelenato':`Pesa (${st.w} su 2 fatte)`);pesa.disabled=st.solved||sceglie();
+    $('#vuota').disabled=!!st.solved||sceglie();scala();};
+  const dice=(m,cls='cap')=>{const c=$('#cap');c.textContent=m;c.className=cls;};
+  const reset=()=>{if(st.res!==null){st.res=null;alvo(0);}};
+  el.querySelector('#cups').onclick=e=>{const b=e.target.closest('.cup');if(!b||st.solved)return;const i=+b.dataset.i;
+    if(sceglie()){
+      if(i===st.p){st.solved=true;save();aggiorna();dice(`Sul piede del calice ${i+1} è inciso: ${ans}.`,'cap won');sbloccaInput();return;}
+      S.pen+=D.penalita.errore;S.er++;perdiSanita(D.sanita.errore);glitch();
+      dice(`Quello era vino benedetto: sul piede c'è scritto ${st.nomi[i]}. +1 minuto, Sanità -${D.sanita.errore}. I calici sono stati rimescolati: le pesate ricominciano.`,'cap');
+      nuovo();save();aggiorna();alvo(0);return;}
+    st.a[i]=(st.a[i]+1)%3;reset();save();aggiorna();};
+  $('#vuota').onclick=()=>{st.a.fill(0);reset();dice('');save();aggiorna();};
+  $('#pesa').onclick=()=>{
+    const l=st.a.filter(v=>v===1).length,r=st.a.filter(v=>v===2).length;
+    if(!l||l!==r)return dice('Servono lo stesso numero di calici su ciascun piatto, almeno uno.');
+    st.w++;const pl=st.a[st.p];const res=pl===1?-1:pl===2?1:0;st.res=res;
+    dice(res===-1?'Il piatto sinistro scende: il calice avvelenato è lì.':res===1?'Il piatto destro scende: il calice avvelenato è lì.':'I piatti restano in equilibrio: il calice avvelenato non è tra quelli pesati.');
+    if(st.w>=2){setTimeout(()=>{if(st.solved)return;st.a.fill(0);st.res=null;alvo(0);save();aggiorna();dice('Pesate finite. Indicate il calice avvelenato.');},1800);}
+    save();aggiorna();alvo(res*11);};
+  if(st.res!==null&&st.res!==undefined)ang=st.res*11;
+  aggiorna();
+  if(st.solved)dice(`Sul piede del calice ${st.p+1} è inciso: ${ans}.`,'cap won');
+  else if(sceglie())dice('Pesate finite. Indicate il calice avvelenato.');
+}
+
+/* --- Ruota cifrata (non più usata nelle tappe) --- */
 const AL='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function mountRuota(el,t){
   const st=mgState(t);let k=st.k||0;const step=360/26,C=150;
