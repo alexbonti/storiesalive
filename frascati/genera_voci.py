@@ -66,7 +66,7 @@ if "--voci" in argv:
     elenco_voci(argv[i + 1] if i + 1 < len(argv) and not argv[i + 1].startswith("--") else "")
     sys.exit()
 
-VOCI = {k: os.environ.get("VOCE_" + k.upper()) for k in ("cardinale", "custode", "ombra")}
+VOCI = {k: os.environ.get("VOCE_" + k.upper()) or A["regia"][k].get("voice_id") for k in ("cardinale", "custode", "ombra")}   # ambiente oppure id salvato da crea_voci.py
 jobs = [(d["intro"]["id"], d["intro"]["personaggio"], d["intro"]["testo"]),
         (d["chiusura"]["id"], d["chiusura"]["personaggio"], d["chiusura"]["testo"])]
 for t in d["tappe"] + [d["finale"]]:
@@ -89,7 +89,7 @@ if "--solo" in argv:
 out.mkdir(parents=True, exist_ok=True)
 
 if not KEY or not all(VOCI.values()):
-    sys.exit("Mancano ELEVENLABS_API_KEY o gli id delle voci (VOCE_CARDINALE, VOCE_CUSTODE, VOCE_OMBRA). Usa --voci per cercarli.")
+    sys.exit("Mancano ELEVENLABS_API_KEY o gli id delle voci (VOCE_CARDINALE, VOCE_CUSTODE, VOCE_OMBRA, oppure python3 crea_voci.py).")
 
 for id_, chi, testo in jobs:
     f = out / (id_ + ".mp3")
