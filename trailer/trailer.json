@@ -1,0 +1,328 @@
+{
+ "titolo": "Il Diario del Cardinale: trailer",
+ "durata": 45,
+ "voce": {
+  "voice_id": "JJCR1UICgHnHljtvu5uF",
+  "nome": "Don - Movie Trailer Narrator (libreria ElevenLabs)",
+  "battute": [
+   {
+    "id": "vo1",
+    "t": 2.8,
+    "testo": "Frascati. Sixteen-oh-three."
+   },
+   {
+    "id": "vo2",
+    "t": 5.2,
+    "testo": "One cardinal. One forbidden door."
+   },
+   {
+    "id": "vo3",
+    "t": 9.1,
+    "testo": "Tonight... it opens."
+   },
+   {
+    "id": "vo4a",
+    "t": 11.6,
+    "testo": "Four deadly puzzles."
+   },
+   {
+    "id": "vo4b",
+    "t": 14.2,
+    "testo": "Three nightmare monsters."
+   },
+   {
+    "id": "vo4c",
+    "t": 17.1,
+    "testo": "Two brave players."
+   },
+   {
+    "id": "vo4d",
+    "t": 19.7,
+    "testo": "One impossible night."
+   },
+   {
+    "id": "vo5a",
+    "t": 22.0,
+    "testo": "Run!"
+   },
+   {
+    "id": "vo5b",
+    "t": 23.5,
+    "testo": "Solve!"
+   },
+   {
+    "id": "vo5c",
+    "t": 25.1,
+    "testo": "Survive!"
+   },
+   {
+    "id": "vo6",
+    "t": 27.3,
+    "testo": "Il Diario del Cardinale."
+   },
+   {
+    "id": "vo7",
+    "t": 31.6,
+    "testo": "The most explosive puzzle hunt ever to hit the hills of Frascati!"
+   },
+   {
+    "id": "vo8",
+    "t": 37.6,
+    "testo": "Play it tonight! Batteries not included."
+   },
+   {
+    "id": "vo9",
+    "t": 41.6,
+    "testo": "Coming soon... to a piazza near you."
+   }
+  ]
+ },
+ "musica": {
+  "durata": 45,
+  "prompt": "80s action movie trailer music, synthwave. Starts ominous and quiet with a low analog synth drone and slow pulse, builds with driving arpeggiated sequencers, gated reverb snare drums and a heroic bass line, big epic synth chorus in the middle, then a final dramatic stinger hit at the very end. Retro, neon, adrenaline, instrumental, no vocals."
+ },
+ "effetti": [
+  {
+   "id": "tuono",
+   "durata": 3.0,
+   "prompt": "Loud thunder crack followed by deep rumble"
+  },
+  {
+   "id": "whoosh",
+   "durata": 1.0,
+   "prompt": "Fast cinematic whoosh swipe, punchy"
+  },
+  {
+   "id": "boom",
+   "durata": 2.5,
+   "prompt": "Big retro action movie explosion boom with rumble, punchy and short"
+  },
+  {
+   "id": "colpo",
+   "durata": 1.0,
+   "prompt": "Heavy cinematic impact hit with a sub drop"
+  },
+  {
+   "id": "laser",
+   "durata": 1.0,
+   "prompt": "80s sci-fi laser zap"
+  },
+  {
+   "id": "statica",
+   "durata": 1.5,
+   "prompt": "VHS tape static glitch burst, short"
+  },
+  {
+   "id": "ding",
+   "durata": 1.5,
+   "prompt": "Retro TV commercial sparkle ding chime"
+  }
+ ],
+ "cue": [
+  {
+   "t": 0.05,
+   "sfx": "statica",
+   "vol": 0.8
+  },
+  {
+   "t": 3.35,
+   "sfx": "tuono",
+   "vol": 1
+  },
+  {
+   "t": 5.95,
+   "sfx": "tuono",
+   "vol": 0.9
+  },
+  {
+   "t": 9.15,
+   "sfx": "boom",
+   "vol": 1
+  },
+  {
+   "t": 11.4,
+   "sfx": "whoosh",
+   "vol": 0.8
+  },
+  {
+   "t": 11.6,
+   "sfx": "colpo",
+   "vol": 0.8
+  },
+  {
+   "t": 12.05,
+   "sfx": "whoosh",
+   "vol": 0.5
+  },
+  {
+   "t": 12.7,
+   "sfx": "whoosh",
+   "vol": 0.5
+  },
+  {
+   "t": 13.35,
+   "sfx": "whoosh",
+   "vol": 0.5
+  },
+  {
+   "t": 14.0,
+   "sfx": "whoosh",
+   "vol": 0.8
+  },
+  {
+   "t": 14.15,
+   "sfx": "@ruggito",
+   "vol": 0.7
+  },
+  {
+   "t": 14.3,
+   "sfx": "colpo",
+   "vol": 0.8
+  },
+  {
+   "t": 15.15,
+   "sfx": "@ruggito",
+   "vol": 0.7
+  },
+  {
+   "t": 15.3,
+   "sfx": "colpo",
+   "vol": 0.8
+  },
+  {
+   "t": 16.15,
+   "sfx": "@ruggito",
+   "vol": 0.7
+  },
+  {
+   "t": 16.299999999999997,
+   "sfx": "colpo",
+   "vol": 0.8
+  },
+  {
+   "t": 17.0,
+   "sfx": "whoosh",
+   "vol": 0.8
+  },
+  {
+   "t": 17.2,
+   "sfx": "laser",
+   "vol": 0.7
+  },
+  {
+   "t": 18.0,
+   "sfx": "laser",
+   "vol": 0.6
+  },
+  {
+   "t": 19.6,
+   "sfx": "whoosh",
+   "vol": 0.8
+  },
+  {
+   "t": 21.8,
+   "sfx": "whoosh",
+   "vol": 0.9
+  },
+  {
+   "t": 22.85,
+   "sfx": "boom",
+   "vol": 0.8
+  },
+  {
+   "t": 24.25,
+   "sfx": "boom",
+   "vol": 0.8
+  },
+  {
+   "t": 25.65,
+   "sfx": "boom",
+   "vol": 0.8
+  },
+  {
+   "t": 27.35,
+   "sfx": "boom",
+   "vol": 1
+  },
+  {
+   "t": 27.4,
+   "sfx": "colpo",
+   "vol": 1
+  },
+  {
+   "t": 31.5,
+   "sfx": "colpo",
+   "vol": 0.8
+  },
+  {
+   "t": 32.1,
+   "sfx": "colpo",
+   "vol": 0.8
+  },
+  {
+   "t": 32.7,
+   "sfx": "colpo",
+   "vol": 0.8
+  },
+  {
+   "t": 34.0,
+   "sfx": "boom",
+   "vol": 1
+  },
+  {
+   "t": 34.3,
+   "sfx": "boom",
+   "vol": 0.8
+  },
+  {
+   "t": 35.2,
+   "sfx": "colpo",
+   "vol": 0.7
+  },
+  {
+   "t": 35.48,
+   "sfx": "colpo",
+   "vol": 0.7
+  },
+  {
+   "t": 35.76,
+   "sfx": "colpo",
+   "vol": 0.7
+  },
+  {
+   "t": 36.04,
+   "sfx": "colpo",
+   "vol": 0.7
+  },
+  {
+   "t": 36.3,
+   "sfx": "@porta",
+   "vol": 1
+  },
+  {
+   "t": 36.3,
+   "sfx": "boom",
+   "vol": 0.9
+  },
+  {
+   "t": 37.4,
+   "sfx": "whoosh",
+   "vol": 0.8
+  },
+  {
+   "t": 38.6,
+   "sfx": "ding",
+   "vol": 0.9
+  },
+  {
+   "t": 44.0,
+   "sfx": "colpo",
+   "vol": 1
+  },
+  {
+   "t": 44.2,
+   "sfx": "statica",
+   "vol": 1
+  }
+ ]
+}

@@ -13,6 +13,7 @@ Web app statica (HTML/CSS/JS vanilla + Leaflet vendorizzato), pensata per telefo
 - `mostri/SCENEGGIATURA.md`: storyboard e prompt per generare i video con l'AI.
 - `prepara_video.py`: converte le clip AI (540x960 H.264, audio mono) e ne estrae primo/ultimo fotogramma.
 - `genera_segnaposto.py`: rigenera le clip provvisorie (sovrascrive `mostri/`).
+- `../trailer/`: trailer di 45 s in stile spot anni '80 (pixel art 320x180 → MP4 1280x720). `trailer.html` disegna tutto dal codice riusando gli sprite di `frascati/index.html` (si vede nel browser; `?t=12.5` mostra un fotogramma). `genera_audio.py` crea voce da annunciatore, musica synthwave ed effetti con ElevenLabs (testi, tempi e cue in `trailer.json`). `render.js` esporta il video, `mix.py` mixa l'audio e produce `trailer.mp4`. Per rifarlo: `node render.js /tmp/v.mp4 && python3 mix.py /tmp/v.mp4 trailer.mp4`. Se cambi una scena o un tempo di `trailer.json`, rifai entrambi i passi.
 
 ## Stato
 - Tappe: 1 Piazza Marconi (tessere scorrevoli, VILLA), 2 Scuderie Aldobrandini (percorso del cavallo su scacchiera 5x5, OCCHIO; trappola: OCCASO), 3 Cattedrale (lucchetto a 4 ruote, codice 8427, CORONA), 4 Chiesa del Gesù (specchio Atbash VXL, ECO), 5 Piazza San Rocco (nove calici e bilancia, due pesate, CONTAGIO; nessuna lettera, dà il Rosario), finale al Ristorante Pasquino (barili 3/5 L, VOCE dalle lettere V O C E). Ogni squadra ha un ordine diverso: Nyarlathotep 1-2-5-3-4, Dagon 3-1-4-2-5, Azathoth 5-4-3-2-1.
