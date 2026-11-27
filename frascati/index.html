@@ -223,7 +223,8 @@ body.folle::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:
 <div id="game" class="screen">
   <div id="bar">
     <div><div class="team-name" id="barTeam"></div><div class="step" id="barStep"></div></div>
-    <button id="mus" class="quiet" aria-label="Musica" aria-pressed="true" style="min-height:40px;width:44px;padding:0"></button>
+    <div style="display:flex;gap:4px"><button id="mus" class="quiet" aria-label="Musica" aria-pressed="true" style="min-height:40px;width:44px;padding:0"></button>
+    <button id="rst" class="quiet" aria-label="Ricomincia la partita" style="min-height:40px;width:44px;padding:0"></button></div>
     <div class="right"><div id="timer">00:00</div><div id="pts">0 punti</div><div id="san">Sanità 100</div></div>
   </div>
   <div id="map"></div>
@@ -266,6 +267,7 @@ body.folle::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:
 const IC={
  speaker:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
  mute:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>',
+ restart:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v5h5"/></svg>',
  left:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
  right:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
  coin:s=>`<svg class="coin${s?' spent':''}" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11"/><path d="M13 6l5 7-5 7-5-7z"/></svg>`,
@@ -331,7 +333,7 @@ function init(data){
   D.squadre.forEach((t,i)=>{const b=document.createElement('button');b.className='team';
     b.innerHTML=`<span class="display">${t.nome}</span><small>tappe ${t.ordine.join(' · ')}</small>`;
     b.onclick=()=>iniziaSquadra(i);$('#teams').appendChild(b);});
-  $('#restart').onclick=()=>{if(confirm('Ricominciare da zero?')){localStorage.removeItem(KEY);location.reload();}};
+  $('#restart').onclick=ricomincia;
   const prev=localStorage.getItem(KEY);if(prev){S=JSON.parse(prev);entraGioco();}
 }
 function iniziaSquadra(i){stopAudio();
@@ -640,7 +642,10 @@ function musicaStato(){
     if(S.idx===D.tappe.length)return musica('sala',.5);
     return S.phase==='enigma'?musica('enigma',.4):musica('esplorazione',S.phase==='scena'?.35:.45);}
   return musica('tema',.55);}
-function aggiornaMus(){const b=$('#mus');b.innerHTML=MU.on?IC.speaker:IC.mute;b.setAttribute('aria-pressed',MU.on);b.setAttribute('aria-label',MU.on?'Silenzia la musica':'Riattiva la musica');}
+function ricomincia(){if(!confirm('Ricominciare da zero? Perdete i progressi di questa partita.'))return;
+  try{localStorage.removeItem(KEY);}catch(e){}location.reload();}
+function aggiornaMus(){$('#rst').innerHTML=IC.restart;const b=$('#mus');b.innerHTML=MU.on?IC.speaker:IC.mute;b.setAttribute('aria-pressed',MU.on);b.setAttribute('aria-label',MU.on?'Silenzia la musica':'Riattiva la musica');}
+$('#rst').onclick=ricomincia;
 $('#mus').onclick=()=>{MU.on=!MU.on;try{localStorage.setItem('diario_mus_off',MU.on?'0':'1');}catch(e){}muInit();muVol();aggiornaMus();};
 ['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev,()=>muInit(),{once:true,capture:true}));
 /* effetti: usa il campione se c'è, altrimenti il bip sintetico */

@@ -23,13 +23,13 @@ Web app statica (HTML/CSS/JS vanilla + Leaflet vendorizzato), pensata per telefo
 - Sanità: parte da 100. Errore -5. Sotto 60 il testo trema, sotto 30 lo schermo si arrossa. Con poca Sanità le finestre dei gesti si accorciano fino al 70%. Punteggio finale = punti + Sanità.
 - Reliquie: Rosario d'osso (+25 Sanità), Lanterna cieca (suggerimento senza penalità), Sale benedetto (salta un mostro senza premio).
 - Test: aggiungere `?test` all'URL (simula presenza, reset, tocco sulla mappa per leggere le coordinate, "fai apparire il mostro"). `?test&lento` triplica le finestre dei gesti. In `?test` ogni enigma ha "Test: salta questo gioco" (risolve e invia la risposta giusta, con i punti normali) e ogni scontro ha "Test: salta lo scontro" (vittoria con reliquia).
-- Stato in localStorage `diario_cardinale_v2`.
+- Stato in localStorage `diario_cardinale_v2`. Tasto Ricomincia (icona freccia circolare) nella barra in alto durante la partita, e a fine gioco: chiede conferma, cancella lo stato e ricarica. La preferenza della musica resta.
 
 ## Da fare
 1. Pubblicato su GitHub Pages dal branch `main`: https://alexbonti.github.io/storiesalive/ (GPS richiede https).
 2. Fatto: 25 voci in `audio/*.mp3`, 6 tracce in `audio/musica/`, 5 effetti in `audio/sfx/`. Voci della libreria ElevenLabs (id in `storia.json` → `audio.regia.<nome>.voice_id`): Cardinale = Elian, Custode = Paolo Margari, Ombra = Tommaso Eramo; scelte senza ascolto, da verificare. L'account ElevenLabs ha 10/10 voci personalizzate, quindi `crea_voci.py salva` fallisce finché non si libera un posto. Per cambiare una voce: modificare il `voice_id` e rilanciare `genera_voci.py --force --solo ...`. In questo ambiente la chiave vive nel proxy: usare `ELEVENLABS_API_KEY=proxy-injected`.
 2b. Generare i video dei mostri seguendo `mostri/SCENEGGIATURA.md`, poi `prepara_video.py`.
-3. Sopralluogo: verificare coordinate (Piazza Marconi, Scuderie, finale), orari Scuderie, lapide in cattedrale, falsa cupola del Gesù, fraschetta del finale.
+3. Sopralluogo: verificare coordinate (Piazza Marconi, Scuderie, finale), orari Scuderie, lapide in cattedrale, falsa cupola del Gesù. Il finale è al Ristorante Pasquino (Via Sepolcro di Lucullo 6): coordinate stimate (41.8069, 12.6824), da correggere sul posto con `?test`; avvisare il gestore, controllare orari e prenotare per 6.
 4. Aggiornare documento e slide con i nuovi enigmi.
 5. Idee: più giochi interattivi in stile Professor Layton, battute tra personaggi.
 

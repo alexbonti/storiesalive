@@ -157,9 +157,9 @@
  ],
  "finale": {
   "id": "finale",
-  "luogo": "La cantina: la fraschetta del finale",
-  "lat": 41.8068,
-  "lng": 12.68,
+  "luogo": "Ristorante Pasquino, Via Sepolcro di Lucullo 6",
+  "lat": 41.8069,
+  "lng": 12.6824,
   "raggio": 60,
   "personaggio": "ombra",
   "frammento": "Siete arrivati. Sotto i vostri piedi qualcosa ascolta. Le quattro lettere sono vostre. Ora serve la parola.",
@@ -167,7 +167,7 @@
   "risposte": [
    "voce"
   ],
-  "verifica": "Scegliere la fraschetta, mettere le coordinate vere e avvisare il gestore complice con la busta sigillata.",
+  "verifica": "Ristorante Pasquino (Via Sepolcro di Lucullo 6): le coordinate sono stimate, controllarle sul posto con ?test toccando la mappa davanti all'ingresso. Avvisare in anticipo il gestore, controllare gli orari di apertura e prenotare un tavolo per 6.",
   "gioco": "barili",
   "suggerimenti": [
    "Le tappe hanno un numero: mettete le lettere in quell'ordine.",
