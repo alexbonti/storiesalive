@@ -406,5 +406,94 @@
     "La Porta si chiude."
    ]
   ]
+ },
+ "audio": {
+  "_nota": "Configurazione di genera_voci.py e genera_musica.py. Le tracce finiscono in audio/musica/<id>.mp3 e gli effetti in audio/sfx/<id>.mp3, che il gioco carica da solo.",
+  "modello_voce": "eleven_multilingual_v2",
+  "regia": {
+   "cardinale": {
+    "descrizione": "Uomo anziano, 65-70 anni, italiano colto con una leggera cadenza romana. Voce roca e stanca, solenne, quasi un sussurro nei passaggi di paura. Ha visto qualcosa che non dovrebbe esistere.",
+    "stabilita": 0.45,
+    "somiglianza": 0.8,
+    "stile": 0.35,
+    "velocita": 0.93,
+    "tag_v3": "[tired] "
+   },
+   "custode": {
+    "descrizione": "Uomo sui 45-55 anni, voce calda, pacata e chiara. Aiuta senza dire troppo. Ritmo lento, leggermente ironico.",
+    "stabilita": 0.6,
+    "somiglianza": 0.8,
+    "stile": 0.15,
+    "velocita": 0.97,
+    "tag_v3": ""
+   },
+   "ombra": {
+    "descrizione": "Voce profonda, bassa e sussurrata, non del tutto umana. Inquietante, lenta, con pause.",
+    "stabilita": 0.35,
+    "somiglianza": 0.75,
+    "stile": 0.5,
+    "velocita": 0.88,
+    "tag_v3": "[whispers] "
+   }
+  },
+  "musica": [
+   {
+    "id": "tema",
+    "durata": 90,
+    "prompt": "Tema principale. Notturno a Frascati nel 1603, una cittadina sui colli sopra Roma. Violoncello solo lento e malinconico, bordone grave, arpa a pizzico rada, campane lontane, un sussurro appena percepibile. Misterioso, elegante, inquietante. Strumentale, senza voci. Colonna sonora cinematografica scura, elegante, ispirata all'horror cosmico e al gotico italiano del Seicento."
+   },
+   {
+    "id": "esplorazione",
+    "durata": 120,
+    "prompt": "Camminata notturna tra vicoli di pietra. Liuto e mandolino a pizzico, pad morbidi, battito lento e regolare, leggera tensione, volume basso. Deve poter essere ascoltata a lungo senza stancare, loop senza una vera fine. Strumentale, senza voci. Colonna sonora cinematografica scura, elegante, ispirata all'horror cosmico e al gotico italiano del Seicento."
+   },
+   {
+    "id": "enigma",
+    "durata": 120,
+    "prompt": "Sottofondo per risolvere un enigma. Celesta e armonica a bicchieri, pulsazione morbida come un orologio lontano, tensione contenuta, contemplativo. Nessuna melodia invadente, loop continuo. Strumentale, senza voci. Colonna sonora cinematografica scura, elegante, ispirata all'horror cosmico e al gotico italiano del Seicento."
+   },
+   {
+    "id": "tensione",
+    "durata": 90,
+    "prompt": "Scontro con un mostro nei vicoli. Tamburi bassi martellanti, archi dissonanti, ottoni gravi a stoccate, ritmo veloce, panico crescente. Intenso ma compatto, loop. Strumentale, senza voci. Colonna sonora cinematografica scura, elegante, ispirata all'horror cosmico e al gotico italiano del Seicento."
+   },
+   {
+    "id": "sala",
+    "durata": 120,
+    "prompt": "Finale rituale in una cantina. Bordoni d'organo profondissimi, battito cardiaco lento di percussioni, riverbero da chiesa, solenne e carico di attesa, un crescendo lentissimo. Strumentale, senza voci. Colonna sonora cinematografica scura, elegante, ispirata all'horror cosmico e al gotico italiano del Seicento."
+   },
+   {
+    "id": "vittoria",
+    "durata": 40,
+    "prompt": "Risoluzione breve e vittoriosa ma ancora un po' inquietante. Accordi caldi d'organo che si risolvono, campanelle, sollievo, poi dissolvenza lenta. Strumentale, senza voci. Colonna sonora cinematografica scura, elegante, ispirata all'horror cosmico e al gotico italiano del Seicento."
+   }
+  ],
+  "effetti": [
+   {
+    "id": "segno",
+    "durata": 1.0,
+    "prompt": "Breve suono magico di allarme, campanello di cristallo che sale, secco, senza coda."
+   },
+   {
+    "id": "ok",
+    "durata": 1.5,
+    "prompt": "Tocco riuscito: colpo secco e pulito di pietra con una breve scintilla luminosa che sale."
+   },
+   {
+    "id": "ko",
+    "durata": 2.0,
+    "prompt": "Colpo sordo e violento di un artiglio, grido distorto, vetro che si spezza, brutale e breve."
+   },
+   {
+    "id": "ruggito",
+    "durata": 3.0,
+    "prompt": "Ruggito gutturale e bagnato di una creatura mostruosa, profondo, con gocciolio d'acqua e un'eco di caverna."
+   },
+   {
+    "id": "porta",
+    "durata": 4.0,
+    "prompt": "Due enormi battenti di legno e ferro che si chiudono con un tonfo profondo, eco di cantina, poi silenzio con un fruscio."
+   }
+  ]
  }
 }
