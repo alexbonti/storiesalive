@@ -223,6 +223,7 @@ body.folle::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:
 <div id="game" class="screen">
   <div id="bar">
     <div><div class="team-name" id="barTeam"></div><div class="step" id="barStep"></div></div>
+    <button id="mus" class="quiet" aria-label="Musica" aria-pressed="true" style="min-height:40px;width:44px;padding:0"></button>
     <div class="right"><div id="timer">00:00</div><div id="pts">0 punti</div><div id="san">Sanità 100</div></div>
   </div>
   <div id="map"></div>
@@ -264,6 +265,7 @@ body.folle::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:
 /* ---------- Icone ---------- */
 const IC={
  speaker:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+ mute:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>',
  left:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
  right:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
  coin:s=>`<svg class="coin${s?' spent':''}" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11"/><path d="M13 6l5 7-5 7-5-7z"/></svg>`,
@@ -306,11 +308,12 @@ function dist(a,b,c,d){const R=6371000,t=x=>x*Math.PI/180,dl=t(c-a),dn=t(d-b);
   const h=Math.sin(dl/2)**2+Math.cos(t(a))*Math.cos(t(c))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
 
 /* ---------- Audio ---------- */
-function stopAudio(){if(audioEl){audioEl.pause();audioEl=null;}if('speechSynthesis' in window)speechSynthesis.cancel();}
+function stopAudio(){if(audioEl){audioEl.pause();audioEl=null;}if('speechSynthesis' in window)speechSynthesis.cancel();duck(false);}
 function speak(id,testo,chi){
   stopAudio();const a=new Audio('audio/'+id+'.mp3');audioEl=a;
+  a.onplay=()=>duck(true);a.onended=()=>duck(false);
   a.onerror=()=>{if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(testo);u.lang='it-IT';
-    u.pitch=chi==='ombra'?0.3:chi==='custode'?0.7:0.9;u.rate=chi==='ombra'?0.8:0.95;speechSynthesis.speak(u);};
+    u.pitch=chi==='ombra'?0.3:chi==='custode'?0.7:0.9;u.rate=chi==='ombra'?0.8:0.95;u.onstart=()=>duck(true);u.onend=u.onerror=()=>duck(false);speechSynthesis.speak(u);};
   a.play().catch(()=>{});
 }
 function typewriter(el,text,done){clearInterval(typeTimer);let i=0;el.textContent='';
@@ -322,7 +325,7 @@ const listenBtn=(el,fn)=>{el.innerHTML=IC.speaker+'<span>Ascolta</span>';el.oncl
 /* ---------- Avvio ---------- */
 fetch('storia.json').then(r=>r.json()).then(init);
 function init(data){
-  D=data;draw($('#sprIntro'),'cardinale');draw($('#sprFine'),'cardinale');
+  D=data;aggiornaMus();draw($('#sprIntro'),'cardinale');draw($('#sprFine'),'cardinale');
   $('#introTxt').textContent=D.intro.testo;
   listenBtn($('#introAudio'),()=>speak(D.intro.id,D.intro.testo,'cardinale'));
   D.squadre.forEach((t,i)=>{const b=document.createElement('button');b.className='team';
@@ -386,7 +389,7 @@ function render(){
   $('#barStep').textContent=S.idx<D.tappe.length?`Tappa ${S.idx+1} di ${D.tappe.length}`:'Finale';
   $('#timer').textContent=fmt(elapsed());$('#pts').textContent=S.pts+' punti';
   $('#game').classList.toggle('focus',S.phase==='enigma');setTimeout(()=>map&&map.invalidateSize(),60);
-  mostraTarget();p.scrollTop=0;
+  mostraTarget();p.scrollTop=0;musicaStato();
   const ver=TEST&&t.verifica?`<p class="msg" style="color:var(--gold);font-size:15px">Da verificare: ${t.verifica}</p>`:'';
   if(S.phase==='viaggio'){
     p.innerHTML=`<h2 class="where">${t.luogo}</h2><p class="dist" id="dist">In attesa del GPS…</p>
@@ -481,7 +484,7 @@ function mostraFine(){
   $('#fineTeam').textContent='Squadra '+D.squadre[S.team].nome;
   $('#fineTime').textContent=fmt(S.final||elapsed());$('#finePts').textContent=S.pts+S.san;
   $('#fineLab').textContent=`punti (${S.pts} + ${S.san} di sanità)`;
-  $('#fineTxt').textContent=D.chiusura.testo;
+  $('#fineTxt').textContent=D.chiusura.testo;musicaStato();
   listenBtn($('#fineAudio'),()=>speak(D.chiusura.id,D.chiusura.testo,'cardinale'));
   speak(D.chiusura.id,D.chiusura.testo,'cardinale');
 }
@@ -513,7 +516,7 @@ const clipUrl=(m,f)=>m.cartella+f;
 function preparaClip(m){[m.intro,m.ko,m.vittoria,...m.passi.flatMap(p=>[p.ok,p.ko,p.attesa])].filter(Boolean).forEach(f=>{
   const u=clipUrl(m,f);if(clipCache[u])return;clipCache[u]='…';
   fetch(u).then(r=>{if(!r.ok)throw 0;return r.blob();}).then(b=>{clipCache[u]=URL.createObjectURL(b);}).catch(()=>{delete clipCache[u];});});}
-function suono(tipo){try{_ac=_ac||new (window.AudioContext||window.webkitAudioContext)();const t0=_ac.currentTime,o=_ac.createOscillator(),g=_ac.createGain();
+function suono(tipo){if(campione(tipo))return;tipo=({porta:'ko'})[tipo]||tipo;try{_ac=_ac||new (window.AudioContext||window.webkitAudioContext)();const t0=_ac.currentTime,o=_ac.createOscillator(),g=_ac.createGain();
   const P={segno:[660,880,.12,.08,'triangle'],ok:[520,1040,.18,.08,'sine'],ko:[160,40,.5,.2,'sawtooth']}[tipo];
   o.type=P[4];o.frequency.setValueAtTime(P[0],t0);o.frequency.exponentialRampToValueAtTime(P[1],t0+P[2]);
   g.gain.setValueAtTime(P[3],t0);g.gain.exponentialRampToValueAtTime(.0001,t0+P[2]+.05);o.connect(g);g.connect(_ac.destination);o.start();o.stop(t0+P[2]+.1);}catch(e){}}
@@ -521,7 +524,7 @@ const vibra=p=>{try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}};
 
 function apriLotta(m,dopo,allArrivo){
   if(lottaAperta)return;lottaAperta=true;stopAudio();preparaClip(m);
-  LT={m,dopo,i:0,ko:0,aperta:false,timer:null,chiuso:false};
+  LT={m,dopo,i:0,ko:0,aperta:false,timer:null,chiuso:false};musicaStato();campione('ruggito',.9);
   const by=$('#lbypass');by.style.display=TEST?'':'none';
   by.onclick=()=>{if(!LT||LT.chiuso||S.lotte[S.idx])return;LT.chiuso=true;chiudiFinestra();const v=$('#lv');v.pause();sub('');carta('');esito('vinto');};
   const o=$('#lotta');o.classList.add('on');o.classList.remove('nofilm','rosso');
@@ -600,6 +603,48 @@ function chiudiLotta(){const v=$('#lv');v.pause();v.removeAttribute('src');v.loa
   document.addEventListener('keydown',e=>{if(!LT||!LT.aperta)return;
     const k={ArrowLeft:'sinistra',ArrowRight:'destra',ArrowUp:'su',ArrowDown:'giu',' ':'tocco',Enter:'tocco'}[e.key];if(k){e.preventDefault();mossa(k);}});
 })();
+
+/* ================= Musica ================= */
+/* Tracce in audio/musica/<nome>.mp3 (genera_musica.py). Web Audio: loop senza stacco, dissolvenze, voce che abbassa la musica.
+   Se un file manca, quella traccia è semplicemente silenziosa. */
+const MU={on:(()=>{try{return localStorage.getItem('diario_mus_off')!=='1';}catch(e){return true;}})(),buf:{},cur:null,duck:1,master:null,tok:0,sfx:{}};
+const TRACCE=['tema','esplorazione','enigma','tensione','sala','vittoria'],EFFETTI=['segno','ok','ko','ruggito','porta'];
+function muInit(){if(MU.master)return;try{_ac=_ac||new (window.AudioContext||window.webkitAudioContext)();if(_ac.state==='suspended')_ac.resume();
+  MU.master=_ac.createGain();MU.master.connect(_ac.destination);muVol();
+  EFFETTI.forEach(n=>fetch('audio/sfx/'+n+'.mp3').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(ab=>new Promise((ok,ko)=>_ac.decodeAudioData(ab,ok,ko))).then(b=>{MU.sfx[n]=b;}).catch(()=>{}));
+  musicaStato();setTimeout(()=>TRACCE.forEach(muBuf),8000);}catch(e){}}
+function muVol(){if(!MU.master)return;MU.master.gain.setTargetAtTime(MU.on?MU.duck:0,_ac.currentTime,.25);}
+function duck(on){MU.duck=on?.3:1;muVol();}
+function muBuf(n){return MU.buf[n]||(MU.buf[n]=fetch('audio/musica/'+n+'.mp3').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();})
+  .then(ab=>new Promise((ok,ko)=>_ac.decodeAudioData(ab,ok,ko))).catch(()=>null));}
+async function musica(n,vol=.5){
+  if(!MU.master)return;
+  if(MU.cur&&MU.cur.n===n){MU.cur.g.gain.setTargetAtTime(vol,_ac.currentTime,.6);return;}
+  const tok=++MU.tok,old=MU.cur;MU.cur=null;
+  if(old){old.stop=true;clearTimeout(old.timer);old.g.gain.setTargetAtTime(0,_ac.currentTime,.7);setTimeout(()=>{old.srcs.forEach(s=>{try{s.stop();}catch(e){}});old.g.disconnect();},4000);}
+  if(!n)return;const b=await muBuf(n);if(!b||tok!==MU.tok)return;
+  const g=_ac.createGain();g.gain.value=0;g.connect(MU.master);g.gain.setTargetAtTime(vol,_ac.currentTime,.9);
+  MU.cur={n,g,b,stop:false,timer:null,srcs:[],first:true};muLoop(MU.cur);}
+function muLoop(t){if(t.stop)return;const X=Math.min(3,t.b.duration/4),now=_ac.currentTime,d=t.b.duration;
+  const s=_ac.createBufferSource();s.buffer=t.b;const v=_ac.createGain();s.connect(v);v.connect(t.g);
+  if(t.first){v.gain.setValueAtTime(1,now);t.first=false;}else{v.gain.setValueAtTime(0,now);v.gain.linearRampToValueAtTime(1,now+X);}
+  v.gain.setValueAtTime(1,now+d-X);v.gain.linearRampToValueAtTime(0,now+d);
+  s.start(now);t.srcs.push(s);s.onended=()=>{const i=t.srcs.indexOf(s);if(i>=0)t.srcs.splice(i,1);};
+  t.timer=setTimeout(()=>muLoop(t),(d-X)*1000);}
+/* quale traccia per lo stato attuale */
+function musicaStato(){
+  if(!MU.master)return;
+  if(lottaAperta)return musica('tensione',.6);
+  if(S&&S.done)return musica('vittoria',.5);
+  if(S&&$('#game').classList.contains('on')){
+    if(S.idx===D.tappe.length)return musica('sala',.5);
+    return S.phase==='enigma'?musica('enigma',.4):musica('esplorazione',S.phase==='scena'?.35:.45);}
+  return musica('tema',.55);}
+function aggiornaMus(){const b=$('#mus');b.innerHTML=MU.on?IC.speaker:IC.mute;b.setAttribute('aria-pressed',MU.on);b.setAttribute('aria-label',MU.on?'Silenzia la musica':'Riattiva la musica');}
+$('#mus').onclick=()=>{MU.on=!MU.on;try{localStorage.setItem('diario_mus_off',MU.on?'0':'1');}catch(e){}muInit();muVol();aggiornaMus();};
+['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev,()=>muInit(),{once:true,capture:true}));
+/* effetti: usa il campione se c'è, altrimenti il bip sintetico */
+function campione(n,vol=.8){const b=MU.sfx[n];if(!b||!_ac||!MU.on)return false;try{const s=_ac.createBufferSource(),g=_ac.createGain();s.buffer=b;g.gain.value=vol;s.connect(g);g.connect(_ac.destination);s.start();return true;}catch(e){return false;}}
 
 /* ================= Cutscene in pixel art ================= */
 /* Disegnate dal codice su una tela 120x160, con la tavolozza del gioco. Le didascalie stanno in storia.json (cutscene). */
@@ -720,7 +765,7 @@ t4:{dur:10,beats:[[3.4,'ok'],[6.2,'segno'],[7.6,'segno']],draw(t){
 }},
 
 /* ---------- Finale: le quattro lettere e la Porta ---------- */
-finale:{dur:11,beats:[[1.2,'segno'],[2.2,'segno'],[3.2,'segno'],[4.2,'segno'],[7.4,'ko'],[8.2,'ok']],draw(t){
+finale:{dur:11,beats:[[1.2,'segno'],[2.2,'segno'],[3.2,'segno'],[4.2,'segno'],[7.4,'porta'],[8.2,'ok']],draw(t){
   sky('#05090a','#0e1f16');R(0,140,CW,20,'#070d09');
   const gap=14*(1-eo(seg(t,6,7.6)));
   glow(60,90,60,C.verd,.5+.15*Math.sin(t*2));R(46,40,28,100,mixc('#0a1a12',C.verd,.55));
@@ -752,7 +797,9 @@ function cutscene(id,dopo){
   const dida=(D.cutscene&&D.cutscene[id])||[];
   const calmo=matchMedia('(prefers-reduced-motion:reduce)').matches;
   CUT={sc,t0:performance.now(),dopo,last:-1,fired:0,nd:-1,fine:false};
-  $('#cuttxt').innerHTML='';$('#cutgo').style.visibility='hidden';$('#cutskip').style.visibility='visible';o.classList.add('on');drone(true);
+  $('#cuttxt').innerHTML='';$('#cutgo').style.visibility='hidden';$('#cutskip').style.visibility='visible';o.classList.add('on');
+  if(id==='intro')musica('tema',.55);else if(id==='finale')musica('sala',.55);
+  if(MU.on&&!MU.cur)drone(true);
   const fine=()=>{if(CUT.fine)return;CUT.fine=true;$('#cutgo').style.visibility='visible';$('#cutgo').focus({preventScroll:true});$('#cutskip').style.visibility='hidden';drone(false);};
   const loop=now=>{if(!CUT)return;let t=calmo?sc.dur:(now-CUT.t0)/1000;
     const f=Math.floor(t*14);
