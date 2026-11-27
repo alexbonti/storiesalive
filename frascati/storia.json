@@ -15,11 +15,13 @@
    "ordine": [
     1,
     2,
+    5,
     3,
     4
    ],
    "mostri": {
     "1": "ombra",
+    "2": "profondo",
     "3": "tindalos"
    }
   },
@@ -29,22 +31,26 @@
     3,
     1,
     4,
-    2
+    2,
+    5
    ],
    "mostri": {
     "1": "profondo",
-    "3": "ombra"
+    "3": "ombra",
+    "4": "tindalos"
    }
   },
   {
    "nome": "Azathoth",
    "ordine": [
+    5,
     4,
     3,
     2,
     1
    ],
    "mostri": {
+    "0": "ombra",
     "1": "tindalos",
     "3": "profondo"
    }
@@ -86,19 +92,34 @@
    "raggio": 70,
    "personaggio": "cardinale",
    "frammento": "I cavalli si rifiutano di entrare nelle scuderie dopo il tramonto. Lo stalliere dice che sentono qualcosa sotto il pavimento. Io gli ho detto che è l'acqua. Non era l'acqua.",
-   "enigma": "Sotto le assi delle scuderie il cardinale ha inciso una parola cifrata: R F F K L R. Ogni lettera è stata spostata sempre dello stesso numero di posti nell'alfabeto. Girate l'anello interno finché leggete una parola vera, poi scrivetela.",
+   "enigma": "Lo stalliere incise sul pavimento una scacchiera di lettere e vi fece camminare il suo cavallo. Partite dal ferro e muovetevi come il cavallo degli scacchi, due caselle in una direzione e una di lato, senza ripassare dove siete già stati. In cinque salti scrive la parola di ciò che sta sotto il pavimento e vi guarda.",
    "risposte": [
     "occhio"
    ],
    "lettera": "O",
    "verifica": "Orari delle Scuderie. Se sono chiuse, l'enigma si risolve all'esterno.",
-   "gioco": "ruota",
+   "gioco": "cavallo",
    "suggerimenti": [
-    "È un cifrario di Cesare: lo spostamento è sempre lo stesso per tutte le lettere.",
-    "Lo spostamento è di tre posti.",
-    "Quello che gli stallieri dicevano di aver visto sotto le assi: sei lettere, comincia per O."
+    "Il cavallo salta a L. I puntini d'oro vi mostrano dove può andare.",
+    "Dalla prima O c'è una sola strada che arriva a una C. Dopo due C le strade sono due: una porta a una parola vera, ma sbagliata.",
+    "Cercate ciò che guarda da sotto il pavimento, non ciò che tramonta."
    ],
-   "cifrato": "RFFKLR"
+   "griglia": [
+    "IPCNU",
+    "OOROC",
+    "OVAET",
+    "SAAHR",
+    "MIAGE"
+   ],
+   "partenza": [
+    1,
+    0
+   ],
+   "parola": "OCCHIO",
+   "trappole": {
+    "OCCASO": "Una parola vera, ma il cavallo non scrive ciò che tramonta. Cercate ciò che guarda: tornate indietro."
+   },
+   "intro_gioco": "Il cavallo parte dalla casella con il ferro e salta a L, senza mai ripassare da una casella già toccata. Sei caselle, cinque salti: le lettere formano una parola."
   },
   {
    "n": 3,
@@ -153,6 +174,29 @@
    ],
    "cifrato": "VXL",
    "intro_gioco": "L'Eco risponde sempre al contrario. Lo specchio inverte l'alfabeto: A diventa Z, B diventa Y, e così via. Girate ogni ruota fino alla lettera che lo specchio restituisce."
+  },
+  {
+   "n": 5,
+   "id": "t5",
+   "luogo": "Piazza San Rocco",
+   "lat": 41.8076,
+   "lng": 12.6779,
+   "raggio": 60,
+   "personaggio": "cardinale",
+   "frammento": "A San Rocco, protettore degli appestati, feci portare nove calici di vino benedetto. Il sacrestano giurò che erano tutti uguali. Uno pesava di più. Non era il vino: era ciò che beve chi sta sotto Roma.",
+   "enigma": "Il cardinale fece portare nove calici, uguali all'occhio. Otto contengono vino benedetto. Uno è appesantito dal contagio che viene da sotto. Avete una bilancia a due piatti e due sole pesate: trovate il calice, poi leggete la parola incisa sul suo piede.",
+   "risposte": [
+    "contagio"
+   ],
+   "premio": "rosario",
+   "verifica": "Piazza San Rocco (chiesa di Santa Maria in Vivario): le coordinate sono provvisorie e non verificate. Controllarle sul posto con ?test toccando la mappa al centro della piazza.",
+   "gioco": "calici",
+   "intro_gioco": "Toccate un calice per metterlo sul piatto sinistro, poi sul destro, poi toglierlo. Avete due pesate, poi indicate il calice avvelenato.",
+   "suggerimenti": [
+    "Mettete lo stesso numero di calici su ogni piatto. Il piatto col calice pesante scende.",
+    "Dividete i nove calici in tre gruppi da tre. La prima pesata confronta due gruppi.",
+    "Se i due gruppi pesano uguale, il calice è nel terzo. Con la seconda pesata confrontate due calici di quel gruppo."
+   ]
   }
  ],
  "finale": {
@@ -404,6 +448,20 @@
    [
     7.4,
     "La Porta si chiude."
+   ]
+  ],
+  "t5": [
+   [
+    0.4,
+    "San Rocco, protettore degli appestati."
+   ],
+   [
+    3.4,
+    "Nove calici di vino benedetto, tutti uguali."
+   ],
+   [
+    6.4,
+    "Uno pesa di più. E dentro il vino qualcosa si muove."
    ]
   ]
  },
