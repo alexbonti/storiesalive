@@ -180,6 +180,11 @@ body.folle::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:
 #lv,#lspr{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated;background:#000}
 #lspr{display:none;object-fit:contain;padding:30% 20%}
 #lotta.nofilm #lspr{display:block}#lotta.nofilm #lv{visibility:hidden}
+/* apparizione del mostro prima dello scontro */
+#lotta.apparizione{background:radial-gradient(ellipse at 50% 30%,#1c2c22 0,#0a100c 45%,#000 75%)}
+#lotta.apparizione #lspr{background:transparent;padding:16% 14% 54%;filter:drop-shadow(0 0 26px rgba(120,177,143,.45));animation:emerge 2.4s var(--ease) both,respira 3.4s 2.4s ease-in-out infinite}
+@keyframes emerge{from{opacity:0;transform:scale(.55) translateY(30px);filter:blur(10px) drop-shadow(0 0 0 transparent)}60%{opacity:1}}
+@keyframes respira{50%{transform:scale(1.05) translateY(-4px)}}
 #lotta.colpo{animation:shake .45s var(--ease)}
 #lotta::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--blood);opacity:0;transition:opacity .25s}
 #lotta.rosso::after{opacity:.45}
@@ -528,8 +533,8 @@ function apriLotta(m,dopo,allArrivo){
   if(lottaAperta)return;lottaAperta=true;stopAudio();preparaClip(m);
   LT={m,dopo,i:0,ko:0,aperta:false,timer:null,chiuso:false};musicaStato();campione('ruggito',.9);
   const by=$('#lbypass');by.style.display=TEST?'':'none';
-  by.onclick=()=>{if(!LT||LT.chiuso||S.lotte[S.idx])return;LT.chiuso=true;chiudiFinestra();const v=$('#lv');v.pause();sub('');carta('');esito('vinto');};
-  const o=$('#lotta');o.classList.add('on');o.classList.remove('nofilm','rosso');
+  by.onclick=()=>{if(!LT||LT.chiuso||S.lotte[S.idx])return;LT.chiuso=true;$('#lotta').classList.remove('apparizione');chiudiFinestra();const v=$('#lv');v.pause();sub('');carta('');esito('vinto');};
+  const o=$('#lotta');o.classList.add('on','nofilm','apparizione');o.classList.remove('rosso');
   $('#lnome').textContent=m.nome;lsan();draw($('#lspr'),m.id);
   const v=$('#lv');v.removeAttribute('src');v.load();
   vibra([80,60,80]);
@@ -541,7 +546,7 @@ function apriLotta(m,dopo,allArrivo){
     <button class="primary" id="laff">Affrontatelo</button>
     ${S.inv.sale>0?`<button class="quiet" id="lsale">Gettate il ${D.reliquie.sale.nome.toLowerCase()} e passate</button>`:''}`);
   speak('mostro_'+m.id,m.frase,'ombra');
-  $('#laff').onclick=()=>{stopAudio();carta('');sub('');gioca(m.intro,()=>decisione(0));};
+  $('#laff').onclick=()=>{stopAudio();carta('');sub('');$('#lotta').classList.remove('apparizione');gioca(m.intro,()=>decisione(0));};
   if(S.inv.sale>0)$('#lsale').onclick=()=>{S.inv.sale--;esito('sale');};
 }
 function lsan(){$('#lsan').textContent='Sanità '+S.san;}
@@ -594,7 +599,7 @@ function esito(e){
   $('#lvia').onclick=chiudiLotta;
 }
 function chiudiLotta(){const v=$('#lv');v.pause();v.removeAttribute('src');v.load();
-  $('#lotta').classList.remove('on');carta('');lottaAperta=false;const d=LT.dopo;LT=null;aggiornaSanita();d&&d();}
+  $('#lotta').classList.remove('on','nofilm','apparizione');carta('');lottaAperta=false;const d=LT.dopo;LT=null;aggiornaSanita();d&&d();}
 
 /* gesti: scorrimento in 4 direzioni o tocco */
 (()=>{const o=$('#lotta');let x0=0,y0=0;
