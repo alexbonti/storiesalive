@@ -417,7 +417,9 @@
     "somiglianza": 0.8,
     "stile": 0.35,
     "velocita": 0.93,
-    "tag_v3": "[tired] "
+    "tag_v3": "[tired] ",
+    "voice_id": "jMEwEYrOKjM6NDQNodla",
+    "voce_nome": "Elian - Warm Italian Narrator (libreria)"
    },
    "custode": {
     "descrizione": "Uomo sui 45-55 anni, voce calda, pacata e chiara. Aiuta senza dire troppo. Ritmo lento, leggermente ironico.",
@@ -425,7 +427,9 @@
     "somiglianza": 0.8,
     "stile": 0.15,
     "velocita": 0.97,
-    "tag_v3": ""
+    "tag_v3": "",
+    "voice_id": "4W8fSCDzySFWZZDHotZN",
+    "voce_nome": "Paolo Margari - Pro, Warm & Clear (libreria)"
    },
    "ombra": {
     "descrizione": "Voce profonda, bassa e sussurrata, non del tutto umana. Inquietante, lenta, con pause.",
@@ -433,7 +437,9 @@
     "somiglianza": 0.75,
     "stile": 0.5,
     "velocita": 0.88,
-    "tag_v3": "[whispers] "
+    "tag_v3": "[whispers] ",
+    "voice_id": "l8vQQC0zE2DCDPdibD4n",
+    "voce_nome": "Tommaso Eramo - Narrator (libreria), reso più lento e instabile dalla regia"
    }
   },
   "musica": [

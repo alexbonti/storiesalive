@@ -27,7 +27,7 @@ Web app statica (HTML/CSS/JS vanilla + Leaflet vendorizzato), pensata per telefo
 
 ## Da fare
 1. Pubblicato su GitHub Pages dal branch `main`: https://alexbonti.github.io/storiesalive/ (GPS richiede https).
-2. Generare gli mp3 con `genera_voci.py` (include le frasi dei mostri, voce Ombra) e musica/effetti con `genera_musica.py`. Prima scegliere le voci: `--voci italian`, poi `--campioni`.
+2. Fatto: 25 voci in `audio/*.mp3`, 6 tracce in `audio/musica/`, 5 effetti in `audio/sfx/`. Voci della libreria ElevenLabs (id in `storia.json` → `audio.regia.<nome>.voice_id`): Cardinale = Elian, Custode = Paolo Margari, Ombra = Tommaso Eramo; scelte senza ascolto, da verificare. L'account ElevenLabs ha 10/10 voci personalizzate, quindi `crea_voci.py salva` fallisce finché non si libera un posto. Per cambiare una voce: modificare il `voice_id` e rilanciare `genera_voci.py --force --solo ...`. In questo ambiente la chiave vive nel proxy: usare `ELEVENLABS_API_KEY=proxy-injected`.
 2b. Generare i video dei mostri seguendo `mostri/SCENEGGIATURA.md`, poi `prepara_video.py`.
 3. Sopralluogo: verificare coordinate (Piazza Marconi, Scuderie, finale), orari Scuderie, lapide in cattedrale, falsa cupola del Gesù, fraschetta del finale.
 4. Aggiornare documento e slide con i nuovi enigmi.
